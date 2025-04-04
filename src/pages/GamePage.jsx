@@ -1,31 +1,15 @@
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useGlobalContext } from "../context/GlobalContext";
 
 const GamePage = () => {
-  const apiUrl = import.meta.env.VITE_API_URL;
+  const { fetchGame } = useGlobalContext();
   const { id } = useParams();
   const navigate = useNavigate();
 
   const [gameSelected, setGameSelected] = useState();
 
-  const fetchGame = async (id) => {
-    try {
-      const resGame = await fetch(`${apiUrl}/videogames/${id}`);
-
-      if (!resGame.ok)
-        throw new Error(`Errore HTTP ${resGame.status} nel recupero del gioco`);
-
-      const game = await resGame.json();
-
-      if (!game.success)
-        throw new Error("Non è stato possibile trovare il gioco");
-
-      return game.videogame;
-    } catch (error) {
-      console.error(error);
-    }
-  };
   useEffect(() => {
     fetchGame(id).then((data) => setGameSelected(data));
   }, []);

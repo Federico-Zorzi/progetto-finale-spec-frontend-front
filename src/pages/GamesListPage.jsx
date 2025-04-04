@@ -1,8 +1,9 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { useGlobalContext } from "../context/GlobalContext";
 import GameCard from "../components/GameCard";
+import GameCompareTable from "../components/GameCompareTable";
 
 function debounce(callback, delay) {
   let timer;
@@ -13,15 +14,32 @@ function debounce(callback, delay) {
 }
 
 const GamesListPage = () => {
-  const { gamesList } = useGlobalContext();
+  const { gamesList, fetchGame } = useGlobalContext();
   /* console.log(gamesList); */
   const [titleFilter, setTitleFilter] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("");
   const [alphabeticOrder, setAlphabeticOrder] = useState(1);
 
-  const category = useMemo(() => gamesList.map((g) => g.category), [gamesList]);
+  /* Compare first and second game */
+  const [firstGame, setFirstGame] = useState({});
+  const [secondGame, setSecondGame] = useState({});
+  const [firstGameSelection, setFirstGameSelection] = useState("");
+  const [secondGameSelection, setSecondGameSelection] = useState("");
 
-  /* sort games */
+  /* Categories for filter by category */
+  const categories = useMemo(
+    () => gamesList.map((g) => g.category),
+    [gamesList]
+  );
+
+  /* search by game title */
+  const handleSearch = useCallback(
+    debounce((e) => {
+      setTitleFilter(e.target.value);
+    }, 500)
+  );
+
+  /* Games sorted */
   const gamesListFiltered = useMemo(
     () =>
       gamesList
@@ -39,12 +57,40 @@ const GamesListPage = () => {
     [gamesList, titleFilter, categoryFilter, alphabeticOrder]
   );
 
-  /* search by game title */
-  const handleSearch = useCallback(
-    debounce((e) => {
-      setTitleFilter(e.target.value);
-    }, 500)
+  /* Titles for compare first and second game */
+  const titlesForFirstGame = useMemo(
+    () =>
+      gamesList
+        .filter((g) => g.title !== secondGameSelection)
+        .map((g) => g.title),
+    [gamesList, secondGameSelection]
   );
+  const titlesForSecondGame = useMemo(
+    () =>
+      gamesList
+        .filter((g) => g.title !== firstGameSelection)
+        .map((g) => g.title),
+    [gamesList, firstGameSelection]
+  );
+
+  /*  */
+  useEffect(() => {
+    if (firstGameSelection) {
+      const findGame = gamesList.find((g) => g.title === firstGameSelection);
+      fetchGame(findGame.id)
+        .then((data) => setFirstGame(data))
+        .catch((err) => console.error(err));
+    } else setFirstGame("");
+  }, [gamesList, firstGameSelection]);
+
+  useEffect(() => {
+    if (secondGameSelection) {
+      const findGame = gamesList.find((g) => g.title === secondGameSelection);
+      fetchGame(findGame.id)
+        .then((data) => setSecondGame(data))
+        .catch((err) => console.error(err));
+    } else setSecondGame("");
+  }, [gamesList, secondGameSelection]);
 
   return (
     <main>
@@ -63,7 +109,7 @@ const GamesListPage = () => {
           onChange={(e) => setCategoryFilter(e.target.value)}
         >
           <option value="">Scegli una categoria...</option>
-          {category.map((c, i) => (
+          {categories.map((c, i) => (
             <option key={i} value={c}>
               {c}
             </option>
@@ -85,6 +131,48 @@ const GamesListPage = () => {
               <GameCard game={g} />
             </Link>
           ))}
+      </section>
+
+      <hr />
+      <h2>Confronto</h2>
+      <section id="compare-section">
+        <table>
+          <tbody>
+            <tr>
+              <th></th>
+              <td>
+                <select
+                  className="title-bar"
+                  onChange={(e) => setFirstGameSelection(e.target.value)}
+                  value={firstGameSelection}
+                >
+                  <option value="">Seleziona il primo gioco...</option>
+                  {titlesForFirstGame.map((t, i) => (
+                    <option key={i} value={t}>
+                      {t}
+                    </option>
+                  ))}
+                </select>
+              </td>
+              <td>
+                <select
+                  className="title-bar"
+                  onChange={(e) => setSecondGameSelection(e.target.value)}
+                  value={secondGameSelection}
+                >
+                  <option value="">Seleziona il secondo gioco...</option>
+                  {titlesForSecondGame.map((t, i) => (
+                    <option key={i} value={t}>
+                      {t}
+                    </option>
+                  ))}
+                </select>
+              </td>
+            </tr>
+
+            <GameCompareTable games={[firstGame, secondGame]} />
+          </tbody>
+        </table>
       </section>
     </main>
   );
