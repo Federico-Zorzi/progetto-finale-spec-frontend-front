@@ -1,25 +1,47 @@
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useGlobalContext } from "../context/GlobalContext";
+import GameCard from "../components/GameCard";
 
-const GamesPages = () => {
+function debounce(callback, delay) {
+  let timer;
+  return (...value) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => callback(...value), delay);
+  };
+}
+
+const GamesPage = () => {
   const { gamesList } = useGlobalContext();
   console.log(gamesList);
   const [titleFilter, setTitleFilter] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("");
-  console.log(categoryFilter);
+  const [alphabeticOrder, setAlphabeticOrder] = useState(1);
 
   const category = useMemo(() => gamesList.map((g) => g.category), [gamesList]);
 
   /* sort games */
   const gamesListFiltered = useMemo(
     () =>
-      gamesList.filter((g) =>
-        !categoryFilter
-          ? g.title.toLowerCase().includes(titleFilter.toLowerCase())
-          : g.title.toLowerCase().includes(titleFilter.toLowerCase()) &&
-            g.category === categoryFilter
-      ),
-    [gamesList, titleFilter, categoryFilter]
+      gamesList
+        .filter((g) =>
+          !categoryFilter
+            ? g.title.toLowerCase().includes(titleFilter.toLowerCase())
+            : g.title.toLowerCase().includes(titleFilter.toLowerCase()) &&
+              g.category === categoryFilter
+        )
+        .sort((a, b) =>
+          alphabeticOrder > 0
+            ? a.title.localeCompare(b.title)
+            : b.title.localeCompare(a.title)
+        ),
+    [gamesList, titleFilter, categoryFilter, alphabeticOrder]
+  );
+
+  /* search by game title */
+  const handleSearch = useCallback(
+    debounce((e) => {
+      setTitleFilter(e.target.value);
+    }, 500)
   );
 
   return (
@@ -33,7 +55,7 @@ const GamesPages = () => {
               id="search-bar"
               type="text"
               placeholder="Cerca un gioco..."
-              onChange={(e) => setTitleFilter(e.target.value)}
+              onChange={handleSearch}
             />
 
             {/* sort by category */}
@@ -48,22 +70,25 @@ const GamesPages = () => {
                 </option>
               ))}
             </select>
+
+            <button
+              id="alphabetic-sort"
+              onClick={() => setAlphabeticOrder((currVal) => currVal * -1)}
+            >
+              {alphabeticOrder > 0 ? `↑ A...Z` : `↓ Z...A`}
+            </button>
           </div>
         </div>
       </header>
 
       <main>
-        <ul>
+        <section id="games-list-section">
           {gamesListFiltered.length > 0 &&
-            gamesListFiltered.map((g) => (
-              <li key={g.id}>
-                {g.title} - <span style={{ color: "red" }}>{g.category}</span>
-              </li>
-            ))}
-        </ul>
+            gamesListFiltered.map((g) => <GameCard key={g.id} game={g} />)}
+        </section>
       </main>
     </>
   );
 };
 
-export default GamesPages;
+export default GamesPage;

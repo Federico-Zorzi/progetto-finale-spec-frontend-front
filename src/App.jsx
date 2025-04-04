@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import GamesPages from "./pages/GamesPage";
+import GamesPage from "./pages/GamesPage";
 import { GlobalContextProvider } from "./context/GlobalContext";
 
 function App() {
@@ -8,7 +8,7 @@ function App() {
     <GlobalContextProvider>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<GamesPages />}></Route>
+          <Route path="/" element={<GamesPage />}></Route>
         </Routes>
       </BrowserRouter>
     </GlobalContextProvider>
