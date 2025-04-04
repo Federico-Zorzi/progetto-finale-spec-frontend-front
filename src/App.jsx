@@ -1,6 +1,10 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import GamesPage from "./pages/GamesPage";
+import DefaultLayout from "./pages/layouts/DefaultLayout";
+
+import GamesListPage from "./pages/GamesListPage";
+import GamePage from "./pages/GamePage";
+
 import { GlobalContextProvider } from "./context/GlobalContext";
 
 function App() {
@@ -8,7 +12,10 @@ function App() {
     <GlobalContextProvider>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<GamesPage />}></Route>
+          <Route element={<DefaultLayout />}>
+            <Route path="/" element={<GamesListPage />}></Route>
+            <Route path="/:id" element={<GamePage />}></Route>
+          </Route>
         </Routes>
       </BrowserRouter>
     </GlobalContextProvider>
