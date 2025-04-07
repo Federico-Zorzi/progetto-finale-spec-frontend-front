@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
 
 import { useGlobalContext } from "../context/GlobalContext";
 import GameCard from "../components/GameCard";
@@ -14,8 +13,13 @@ function debounce(callback, delay) {
 }
 
 const GamesListPage = () => {
-  const { gamesList, fetchGame } = useGlobalContext();
-  /* console.log(gamesList); */
+  const {
+    gamesList,
+    fetchGame,
+    favoriteGamesList,
+    addFavoriteGame,
+    removeFavoriteGame,
+  } = useGlobalContext();
   const [titleFilter, setTitleFilter] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("");
   const [alphabeticOrder, setAlphabeticOrder] = useState(1);
@@ -73,7 +77,7 @@ const GamesListPage = () => {
     [gamesList, firstGameSelection]
   );
 
-  /*  */
+  /* Fetch data for compare */
   useEffect(() => {
     if (firstGameSelection) {
       const findGame = gamesList.find((g) => g.title === firstGameSelection);
@@ -116,6 +120,8 @@ const GamesListPage = () => {
           ))}
         </select>
 
+        {/* alphabetic sort */}
+
         <button
           id="alphabetic-sort"
           onClick={() => setAlphabeticOrder((currVal) => currVal * -1)}
@@ -124,17 +130,40 @@ const GamesListPage = () => {
         </button>
       </section>
 
+      {/* games cards */}
       <section id="games-list-section">
-        {gamesListFiltered.length > 0 &&
+        {gamesListFiltered.length > 0 ? (
           gamesListFiltered.map((g) => (
-            <Link key={g.id} to={`/${g.id}`}>
+            <div className="card-container" key={g.id}>
               <GameCard game={g} />
-            </Link>
-          ))}
+
+              <button
+                onClick={() => {
+                  if (!favoriteGamesList.some((game) => game.id === g.id))
+                    addFavoriteGame(g);
+                  else removeFavoriteGame(g.id);
+                }}
+                className="favorite-game-btn"
+              >
+                <i
+                  className={
+                    (favoriteGamesList.some((game) => game.id === g.id)
+                      ? "fa-solid"
+                      : "fa-regular") + " fa-star fa-xl"
+                  }
+                ></i>
+              </button>
+            </div>
+          ))
+        ) : (
+          <p>Nessun gioco è stato trovato...</p>
+        )}
       </section>
 
       <hr />
-      <h2>Confronto</h2>
+
+      {/* Compare two games */}
+      <h2>Confronta due giochi</h2>
       <section id="compare-section">
         <table>
           <tbody>

@@ -1,5 +1,6 @@
 import { createContext, useContext } from "react";
 import useGames from "../custom hooks/useGames";
+import useFavoriteGames from "../custom hooks/useFavoriteGames";
 
 const GlobalContext = createContext();
 export const useGlobalContext = () => useContext(GlobalContext);
@@ -7,6 +8,8 @@ export const useGlobalContext = () => useContext(GlobalContext);
 export const GlobalContextProvider = ({ children }) => {
   const apiUrl = import.meta.env.VITE_API_URL;
   const { gamesList } = useGames();
+  const { favoriteGamesList, addFavoriteGame, removeFavoriteGame } =
+    useFavoriteGames();
 
   const fetchGame = async (id) => {
     try {
@@ -29,6 +32,10 @@ export const GlobalContextProvider = ({ children }) => {
   const globalData = {
     gamesList,
     fetchGame,
+
+    favoriteGamesList,
+    addFavoriteGame,
+    removeFavoriteGame,
   };
 
   return (

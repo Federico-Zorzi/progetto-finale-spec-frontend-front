@@ -7,15 +7,24 @@
   font-style: normal;
 }
 
+/* ROOTS */
+:root {
+  --main-color: #430046;
+  --second-color: #790179;
+  --border-color: #330136;
+}
+
 /* RESET RULES */
 body {
   font-family: "Montserrat", sans-serif;
   margin: 0;
+  position: relative;
 }
 
 main {
   max-width: 800px;
   margin: auto;
+  padding: 1rem;
   height: 100%;
 }
 
@@ -25,6 +34,14 @@ a {
 }
 
 /* HEADER */
+header {
+  background-color: var(--main-color);
+}
+
+.fa-gamepad {
+  color: white;
+}
+
 #header-content {
   padding: 0.5rem 1rem;
 
@@ -35,6 +52,24 @@ a {
 
 h1 {
   margin: 0;
+}
+
+#favorite-list {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  background-color: var(--second-color);
+  color: white;
+  border: 1px solid var(--border-color);
+  border-radius: 40px;
+
+  transition: transform 0.4s ease-in-out;
+}
+
+#favorite-list:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 8px rgba(80, 80, 80, 0.2);
+  background-color: #8d018d;
+  cursor: pointer;
 }
 
 /* FILTERS SECTION */
@@ -78,14 +113,21 @@ h1 {
   gap: 1rem;
 }
 
+.card-container {
+  height: 100%;
+  position: relative;
+}
+
 .card {
   border: 1px solid #ccc;
   border-radius: 5px;
   overflow: hidden;
+  padding: 1rem;
 
   width: 300px;
   height: 100%;
   transition: transform 0.2s ease-in-out;
+  position: relative;
 
   display: flex;
   flex-direction: column;
@@ -93,35 +135,67 @@ h1 {
 }
 
 .card:hover {
-  transform: scale(1.05);
+  transform: scale(1.02);
   cursor: pointer;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.card-header {
-  padding: 1rem;
-}
-
 h3 {
-  margin-top: 0;
+  margin-top: 0.7rem;
 }
 
 .card-body {
-  padding: 1rem;
-
   font-style: italic;
   color: #45a35d;
   font-weight: bold;
 }
 
+.favorite-game-btn,
+.favorite-game-detail-btn {
+  border: none;
+  background-color: inherit;
+  color: rgb(231, 231, 5);
+  padding: 0;
+  margin: 0;
+}
+
+.favorite-game-btn {
+  position: absolute;
+  top: 0.7rem;
+  right: 0.3rem;
+  z-index: 1;
+}
+
+.favorite-game-btn i {
+  transition: transform 0.2s ease-in-out;
+}
+
+.favorite-game-btn:hover i {
+  transform: scale(1.3);
+  cursor: pointer;
+}
+
 /* GAME DETAIL */
+#game-detail-header {
+  display: flex;
+  align-items: center;
+}
+
+#game-detail-header h2 {
+  margin: 0.5rem;
+}
+
+#game-detail-header button {
+  margin-right: 0.3rem;
+}
+
 #back-btn {
   font-size: 1rem;
   padding: 0.3rem 0.8rem;
 
-  background-color: rgb(108, 161, 240);
+  background-color: var(--main-color);
   color: white;
-  border: 1px solid rgb(189, 189, 189);
+  border: 1px solid var(--border-color);
   border-radius: 7px;
 
   transition: transform 0.2s ease-in-out;
@@ -130,10 +204,88 @@ h3 {
 #back-btn:hover {
   transform: scale(1.05);
   cursor: pointer;
+
+  background-color: var(--second-color);
   box-shadow: 0 4px 8px rgba(204, 204, 204, 0.2);
 }
 
 /* GAMES COMPARE */
 #compare-section {
   margin: 2rem 0;
+}
+
+/* SIDEBAR */
+#favorite-sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#favorite-sidebar-header h3 {
+  margin: 0;
+}
+
+#favorite-sidebar-closebtn {
+  text-align: end;
+}
+
+#favorite-sidebar-closebtn button {
+  border: none;
+  cursor: pointer;
+  padding: 0.3rem;
+}
+
+#favorite-sidebar-closebtn button:hover {
+  color: rgb(180, 0, 0);
+}
+
+#favorite-sidebar-container {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 9999;
+
+  padding: 1rem;
+  width: 270px;
+  height: 100%;
+
+  background-color: #f1f1f1;
+  border-left: 1px solid rgb(207, 207, 207);
+
+  transition: transform 0.3s ease-in-out;
+  transform: translateX(0);
+}
+
+#favorite-sidebar-container.hidden {
+  transform: translateX(100%);
+}
+
+#favorite-sidebar-content ul {
+  padding-left: 0rem;
+}
+
+.favorite-game-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.3rem 0;
+}
+
+.favorite-game-item:hover {
+  background-color: #d4d4d4;
+}
+
+.remove-favorite-game {
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+
+  border: none;
+  color: rgb(170, 0, 0);
+  cursor: pointer;
+  padding: 0.3rem;
+  background: none;
+}
+
+.favorite-game-item:hover .remove-favorite-game {
+  opacity: 1;
 }
