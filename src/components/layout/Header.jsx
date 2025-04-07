@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { createPortal } from "react-dom";
 import FavoriteSideBar from "../FavoriteSideBar";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   const [showSideBar, setShowSideBar] = useState(false);
@@ -9,9 +10,9 @@ const Header = () => {
   return (
     <header>
       <div id="header-content">
-        <h1>
-          <i className="fa-solid fa-gamepad"></i>
-        </h1>
+        <Link to={"/"}>
+          <i className="fa-solid fa-gamepad fa-2xl"></i>
+        </Link>
         <button
           id="favorite-list"
           onClick={() => setShowSideBar((curr) => !curr)}

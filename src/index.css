@@ -10,7 +10,8 @@
 /* ROOTS */
 :root {
   --main-color: #430046;
-  --second-color: #790179;
+  --second-color: #9a5e9a;
+  --third-color: #aa50aa;
   --border-color: #330136;
 }
 
@@ -68,7 +69,7 @@ h1 {
 #favorite-list:hover {
   transform: scale(1.1);
   box-shadow: 0 4px 8px rgba(80, 80, 80, 0.2);
-  background-color: #8d018d;
+  background-color: var(--third-color);
   cursor: pointer;
 }
 
@@ -193,7 +194,7 @@ h3 {
   font-size: 1rem;
   padding: 0.3rem 0.8rem;
 
-  background-color: var(--main-color);
+  background-color: var(--second-color);
   color: white;
   border: 1px solid var(--border-color);
   border-radius: 7px;
@@ -205,7 +206,7 @@ h3 {
   transform: scale(1.05);
   cursor: pointer;
 
-  background-color: var(--second-color);
+  background-color: var(--third-color);
   box-shadow: 0 4px 8px rgba(204, 204, 204, 0.2);
 }
 

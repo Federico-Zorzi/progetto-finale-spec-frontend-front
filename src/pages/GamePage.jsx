@@ -12,7 +12,7 @@ const GamePage = () => {
   const [gameSelected, setGameSelected] = useState();
 
   useEffect(() => {
-    fetchGame(id).then((data) => setGameSelected(data));
+    fetchGame([id]).then((data) => setGameSelected(data));
   }, []);
 
   return (

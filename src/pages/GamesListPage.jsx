@@ -30,6 +30,12 @@ const GamesListPage = () => {
   const [firstGameSelection, setFirstGameSelection] = useState("");
   const [secondGameSelection, setSecondGameSelection] = useState("");
 
+  const [compareGamesSelections, setCompareGamesSelections] = useState([
+    { value: "", game: {} },
+    { value: "", game: {} },
+    { value: "", game: {} },
+  ]);
+
   /* Categories for filter by category */
   const categories = useMemo(
     () => gamesList.map((g) => g.category),
@@ -61,40 +67,62 @@ const GamesListPage = () => {
     [gamesList, titleFilter, categoryFilter, alphabeticOrder]
   );
 
-  /* Titles for compare first and second game */
-  const titlesForFirstGame = useMemo(
+  /* Compare games  */
+  const titlesForCompare = useMemo(
     () =>
       gamesList
-        .filter((g) => g.title !== secondGameSelection)
+        .filter((g) =>
+          compareGamesSelections.some((game) => game.value === g.title)
+            ? false
+            : true
+        )
         .map((g) => g.title),
-    [gamesList, secondGameSelection]
-  );
-  const titlesForSecondGame = useMemo(
-    () =>
-      gamesList
-        .filter((g) => g.title !== firstGameSelection)
-        .map((g) => g.title),
-    [gamesList, firstGameSelection]
+    [gamesList, compareGamesSelections]
   );
 
-  /* Fetch data for compare */
-  useEffect(() => {
-    if (firstGameSelection) {
-      const findGame = gamesList.find((g) => g.title === firstGameSelection);
-      fetchGame(findGame.id)
-        .then((data) => setFirstGame(data))
-        .catch((err) => console.error(err));
-    } else setFirstGame("");
-  }, [gamesList, firstGameSelection]);
+  const gamesForCompare = useMemo(() => {
+    return compareGamesSelections.map((g) => g.game);
+  }, [compareGamesSelections]);
 
-  useEffect(() => {
-    if (secondGameSelection) {
-      const findGame = gamesList.find((g) => g.title === secondGameSelection);
-      fetchGame(findGame.id)
-        .then((data) => setSecondGame(data))
+  const handleGameSelectionChange = (index, event) => {
+    if (event.target.value) {
+      const gameSelected = gamesList.find(
+        (game) => game.title === event.target.value
+      );
+
+      fetchGame(gameSelected.id)
+        .then((data) => {
+          setCompareGamesSelections((prevSelections) =>
+            prevSelections.map((item, i) =>
+              i === index ? { ...item, value: data.title, game: data } : item
+            )
+          );
+        })
         .catch((err) => console.error(err));
-    } else setSecondGame("");
-  }, [gamesList, secondGameSelection]);
+    } else
+      setCompareGamesSelections((prevSelections) =>
+        prevSelections.map((item, i) =>
+          i === index ? { ...item, value: "", game: "" } : item
+        )
+      );
+  };
+
+  const getAvailableTitlesForCompare = useCallback(
+    (index) => {
+      return gamesList
+        .map((game) => game.title)
+        .filter((title) => {
+          if (compareGamesSelections[index].value === title) {
+            return true;
+          }
+
+          return !compareGamesSelections.some(
+            (selection, i) => i !== index && selection.value === title
+          );
+        });
+    },
+    [gamesList, compareGamesSelections]
+  );
 
   return (
     <main>
@@ -121,7 +149,6 @@ const GamesListPage = () => {
         </select>
 
         {/* alphabetic sort */}
-
         <button
           id="alphabetic-sort"
           onClick={() => setAlphabeticOrder((currVal) => currVal * -1)}
@@ -162,44 +189,32 @@ const GamesListPage = () => {
 
       <hr />
 
-      {/* Compare two games */}
-      <h2>Confronta due giochi</h2>
+      {/* Compare games */}
+      <h2>Confronta giochi update</h2>
       <section id="compare-section">
         <table>
           <tbody>
             <tr>
               <th></th>
-              <td>
-                <select
-                  className="title-bar"
-                  onChange={(e) => setFirstGameSelection(e.target.value)}
-                  value={firstGameSelection}
-                >
-                  <option value="">Seleziona il primo gioco...</option>
-                  {titlesForFirstGame.map((t, i) => (
-                    <option key={i} value={t}>
-                      {t}
-                    </option>
-                  ))}
-                </select>
-              </td>
-              <td>
-                <select
-                  className="title-bar"
-                  onChange={(e) => setSecondGameSelection(e.target.value)}
-                  value={secondGameSelection}
-                >
-                  <option value="">Seleziona il secondo gioco...</option>
-                  {titlesForSecondGame.map((t, i) => (
-                    <option key={i} value={t}>
-                      {t}
-                    </option>
-                  ))}
-                </select>
-              </td>
+              {compareGamesSelections.map((g, i) => (
+                <td key={i}>
+                  <select
+                    className="title-bar"
+                    onChange={(e) => handleGameSelectionChange(i, e)}
+                    value={g.value}
+                  >
+                    <option value="">Seleziona il gioco...</option>
+                    {getAvailableTitlesForCompare(i).map((t, i) => (
+                      <option key={i} value={t}>
+                        {t}
+                      </option>
+                    ))}
+                  </select>
+                </td>
+              ))}
             </tr>
 
-            <GameCompareTable games={[firstGame, secondGame]} />
+            <GameCompareTable games={gamesForCompare} />
           </tbody>
         </table>
       </section>
