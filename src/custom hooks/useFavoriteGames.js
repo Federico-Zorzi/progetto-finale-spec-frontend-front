@@ -20,6 +20,7 @@ const useFavoriteGames = () => {
   const [favoriteGamesList, dispatch] = useReducer(reducerFavoriteGames, []);
   const [isLoading, setIsLoading] = useState(true); // Add loading state
 
+  /* get fav. games from local storage at the start */
   useEffect(() => {
     /* Get favorite games list from storage  */
     const favoriteGamesListFromStorage =
@@ -41,6 +42,7 @@ const useFavoriteGames = () => {
     }
   }, []);
 
+  /* change fav. games in local storage */
   useEffect(() => {
     /* Change data in storage only if we are not in loading condition */
     if (!isLoading) {
