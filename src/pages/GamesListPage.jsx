@@ -24,12 +24,6 @@ const GamesListPage = () => {
   const [categoryFilter, setCategoryFilter] = useState("");
   const [alphabeticOrder, setAlphabeticOrder] = useState("title_asc");
 
-  /* Compare first and second game */
-  const [firstGame, setFirstGame] = useState({});
-  const [secondGame, setSecondGame] = useState({});
-  const [firstGameSelection, setFirstGameSelection] = useState("");
-  const [secondGameSelection, setSecondGameSelection] = useState("");
-
   const [compareGamesSelections, setCompareGamesSelections] = useState([
     { value: "", game: {} },
     { value: "", game: {} },
@@ -213,7 +207,7 @@ const GamesListPage = () => {
           }
           disabled={gamesList.length === compareGamesSelections.length}
         >
-          <i class="fa-solid fa-square-plus fa-2xl"></i>
+          <i className="fa-solid fa-square-plus fa-2xl"></i>
         </button>
       </div>
       <section id="compare-section">
