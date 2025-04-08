@@ -22,7 +22,7 @@ const GamesListPage = () => {
   } = useGlobalContext();
   const [titleFilter, setTitleFilter] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("");
-  const [alphabeticOrder, setAlphabeticOrder] = useState(1);
+  const [alphabeticOrder, setAlphabeticOrder] = useState("title_asc");
 
   /* Compare first and second game */
   const [firstGame, setFirstGame] = useState({});
@@ -53,7 +53,7 @@ const GamesListPage = () => {
     }, 500)
   );
 
-  /* Games sorted */
+  /* SORT GAMES */
   const gamesListFiltered = useMemo(
     () =>
       gamesList
@@ -63,31 +63,47 @@ const GamesListPage = () => {
             : g.title.toLowerCase().includes(titleFilter.toLowerCase()) &&
               g.category === categoryFilter
         )
-        .sort((a, b) =>
-          alphabeticOrder > 0
-            ? a.title.localeCompare(b.title)
-            : b.title.localeCompare(a.title)
-        ),
+        .sort((a, b) => {
+          switch (alphabeticOrder) {
+            case "title_asc":
+              return a.title.localeCompare(b.title);
+
+            case "title_desc":
+              return b.title.localeCompare(a.title);
+
+            case "category_asc":
+              return a.category.localeCompare(b.category);
+
+            case "category_desc":
+              return b.category.localeCompare(a.category);
+
+            default:
+              return a.title.localeCompare(b.title);
+          }
+        }),
     [gamesList, titleFilter, categoryFilter, alphabeticOrder]
   );
 
-  /* Compare games  */
-  const titlesForCompare = useMemo(
-    () =>
-      gamesList
-        .filter((g) =>
-          compareGamesSelections.some((game) => game.value === g.title)
-            ? false
-            : true
-        )
-        .map((g) => g.title),
+  /* COMPARE GAMES  */
+  /* Title available for selection */
+  const getAvailableTitlesForCompare = useCallback(
+    (index) => {
+      return gamesList
+        .map((game) => game.title)
+        .filter((title) => {
+          if (compareGamesSelections[index].value === title) {
+            return true;
+          }
+
+          return !compareGamesSelections.some(
+            (selection, i) => i !== index && selection.value === title
+          );
+        });
+    },
     [gamesList, compareGamesSelections]
   );
 
-  const gamesForCompare = useMemo(() => {
-    return compareGamesSelections.map((g) => g.game);
-  }, [compareGamesSelections]);
-
+  /* Game selection management */
   const handleGameSelectionChange = (index, event) => {
     if (event.target.value) {
       const gameSelected = gamesList.find(
@@ -111,22 +127,10 @@ const GamesListPage = () => {
       );
   };
 
-  const getAvailableTitlesForCompare = useCallback(
-    (index) => {
-      return gamesList
-        .map((game) => game.title)
-        .filter((title) => {
-          if (compareGamesSelections[index].value === title) {
-            return true;
-          }
-
-          return !compareGamesSelections.some(
-            (selection, i) => i !== index && selection.value === title
-          );
-        });
-    },
-    [gamesList, compareGamesSelections]
-  );
+  /* Games selected for create table */
+  const gamesForCompare = useMemo(() => {
+    return compareGamesSelections.map((g) => g.game);
+  }, [compareGamesSelections]);
 
   return (
     <main>
@@ -153,12 +157,22 @@ const GamesListPage = () => {
         </select>
 
         {/* alphabetic sort */}
-        <button
+        {/* <button
           id="alphabetic-sort"
           onClick={() => setAlphabeticOrder((currVal) => currVal * -1)}
         >
           {alphabeticOrder > 0 ? `↑ A...Z` : `↓ Z...A`}
-        </button>
+        </button> */}
+
+        <select
+          id="alphabetic-sort"
+          onChange={(e) => setAlphabeticOrder(e.target.value)}
+        >
+          <option value="title_asc">↑ A...Z Titolo</option>
+          <option value="title_desc">↓ Z...A Titolo</option>
+          <option value="category_asc">↑ A...Z Categoria</option>
+          <option value="category_desc">↓ Z...A Categoria</option>
+        </select>
       </section>
 
       {/* games cards */}
