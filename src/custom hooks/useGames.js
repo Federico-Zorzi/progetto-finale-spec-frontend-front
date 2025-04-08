@@ -33,7 +33,25 @@ const useGames = () => {
     fetchGames();
   }, []);
 
-  return { gamesList };
+  const addGame = (title, category, softwareHouse, platforms, gamemodes) => {
+    console.log("try", title, category, softwareHouse, platforms, gamemodes);
+
+    /* try {
+      const resGames = await fetch(`${apiUrl}/videogames`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title,
+          category,
+          platforms,
+          gamemodes,
+          softwareHouse: { softwarehouseName },
+        }),
+      });
+    } catch (error) {} */
+  };
+
+  return { gamesList, addGame };
 };
 
 export default useGames;

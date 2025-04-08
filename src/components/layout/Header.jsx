@@ -14,9 +14,9 @@ const Header = () => {
           <i className="fa-solid fa-gamepad fa-2xl"></i>
         </Link>
         <div>
-          {/* <button className="header-btns" onClick={() => navigate(`/AddGame`)}>
+          <button className="header-btns" onClick={() => navigate(`/AddGame`)}>
             Aggiungi giochi
-          </button> */}
+          </button>
           <button
             className="header-btns"
             onClick={() => setShowSideBar((curr) => !curr)}
