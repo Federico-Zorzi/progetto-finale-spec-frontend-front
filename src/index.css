@@ -82,7 +82,8 @@ h1 {
 #category-bar,
 #search-bar,
 #alphabetic-sort,
-.title-bar {
+.title-bar,
+.title-bar-default {
   padding: 0.5rem 1rem;
   font-size: 1rem;
   border: 1px solid rgb(151, 151, 151);
@@ -158,11 +159,13 @@ h3 {
   z-index: 1;
 }
 
-.favorite-game-btn i {
+.favorite-game-btn .fa-star,
+.favorite-game-detail-btn .fa-star {
   transition: transform 0.2s ease-in-out;
 }
 
-.favorite-game-btn:hover i {
+.favorite-game-btn:hover .fa-star,
+.favorite-game-detail-btn:hover .fa-star {
   transform: scale(1.3);
   cursor: pointer;
 }
@@ -202,9 +205,54 @@ h3 {
 }
 
 /* GAMES COMPARE */
+#compare-games-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+#add-compare-game-btn {
+  border: none;
+  color: green;
+  cursor: pointer;
+  padding: 0.4rem;
+}
+
 #compare-section {
   margin: 2rem 0;
   overflow-x: scroll;
+}
+
+.select-game {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.select-game button {
+  position: absolute;
+  left: 0.2rem;
+  z-index: 1;
+
+  padding: 0.5rem 0.6rem;
+  border: none;
+  border-radius: 7px;
+  background-color: #b40000;
+  color: white;
+}
+
+.select-game button:hover {
+  cursor: pointer;
+}
+.title-bar,
+.title-bar-default {
+  width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.select-game .title-bar {
+  padding-left: 2rem;
 }
 
 /* SIDEBAR */
@@ -229,7 +277,7 @@ h3 {
 }
 
 #favorite-sidebar-closebtn button:hover {
-  color: rgb(180, 0, 0);
+  color: #b40000;
 }
 
 #favorite-sidebar-container {

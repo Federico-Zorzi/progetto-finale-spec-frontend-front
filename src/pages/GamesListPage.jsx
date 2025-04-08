@@ -33,7 +33,6 @@ const GamesListPage = () => {
   const [compareGamesSelections, setCompareGamesSelections] = useState([
     { value: "", game: {} },
     { value: "", game: {} },
-    { value: "", game: {} },
   ]);
 
   /* Categories for filter by category */
@@ -157,13 +156,6 @@ const GamesListPage = () => {
         </select>
 
         {/* alphabetic sort */}
-        {/* <button
-          id="alphabetic-sort"
-          onClick={() => setAlphabeticOrder((currVal) => currVal * -1)}
-        >
-          {alphabeticOrder > 0 ? `↑ A...Z` : `↓ Z...A`}
-        </button> */}
-
         <select
           id="alphabetic-sort"
           onChange={(e) => setAlphabeticOrder(e.target.value)}
@@ -208,7 +200,22 @@ const GamesListPage = () => {
       <hr />
 
       {/* Compare games */}
-      <h2>Confronta giochi update</h2>
+      <div id="compare-games-header">
+        <h2>Confronta giochi</h2>
+        <button
+          id="add-compare-game-btn"
+          onClick={() =>
+            gamesList.length !== compareGamesSelections.length &&
+            setCompareGamesSelections((curr) => [
+              ...curr,
+              { value: "", game: {} },
+            ])
+          }
+          disabled={gamesList.length === compareGamesSelections.length}
+        >
+          <i class="fa-solid fa-square-plus fa-2xl"></i>
+        </button>
+      </div>
       <section id="compare-section">
         <table>
           <tbody>
@@ -216,18 +223,31 @@ const GamesListPage = () => {
               <th></th>
               {compareGamesSelections.map((g, i) => (
                 <td key={i}>
-                  <select
-                    className="title-bar"
-                    onChange={(e) => handleGameSelectionChange(i, e)}
-                    value={g.value}
-                  >
-                    <option value="">Seleziona il gioco...</option>
-                    {getAvailableTitlesForCompare(i).map((t, i) => (
-                      <option key={i} value={t}>
-                        {t}
-                      </option>
-                    ))}
-                  </select>
+                  <div className="select-game">
+                    {i > 1 && (
+                      <button
+                        onClick={() =>
+                          setCompareGamesSelections((curr) =>
+                            curr.filter((s, index) => index !== i)
+                          )
+                        }
+                      >
+                        <i className="fa-solid fa-trash"></i>
+                      </button>
+                    )}
+                    <select
+                      className={"title-bar" + (i > 1 ? "" : "-default")}
+                      onChange={(e) => handleGameSelectionChange(i, e)}
+                      value={g.value}
+                    >
+                      <option value="">Seleziona il gioco...</option>
+                      {getAvailableTitlesForCompare(i).map((t, i) => (
+                        <option key={i} value={t}>
+                          {t}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
                 </td>
               ))}
             </tr>
