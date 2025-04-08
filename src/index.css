@@ -9,10 +9,11 @@
 
 /* ROOTS */
 :root {
-  --main-color: #430046;
-  --second-color: #9a5e9a;
-  --third-color: #aa50aa;
-  --border-color: #330136;
+  --main-color: rgb(67, 0, 70);
+  --second-color: rgb(154, 94, 154);
+  --third-color: rgb(170, 80, 170);
+  --border-color: rgb(51, 1, 54);
+  --backgroud-sidebar: #250127;
 }
 
 /* RESET RULES */
@@ -23,7 +24,7 @@ body {
 }
 
 main {
-  max-width: 800px;
+  max-width: 1000px;
   margin: auto;
   padding: 1rem;
   height: 100%;
@@ -55,7 +56,8 @@ h1 {
   margin: 0;
 }
 
-#favorite-list {
+.header-btns {
+  margin-left: 0.7rem;
   padding: 0.5rem 1rem;
   font-size: 1rem;
   background-color: var(--second-color);
@@ -66,7 +68,7 @@ h1 {
   transition: transform 0.4s ease-in-out;
 }
 
-#favorite-list:hover {
+.header-btns:hover {
   transform: scale(1.1);
   box-shadow: 0 4px 8px rgba(80, 80, 80, 0.2);
   background-color: var(--third-color);
@@ -76,6 +78,7 @@ h1 {
 /* FILTERS SECTION */
 #filters-section {
   display: flex;
+  flex-wrap: wrap;
   gap: 0.5rem;
 }
 
@@ -92,17 +95,11 @@ h1 {
   flex: 1;
 }
 
-#alphabetic-sort:hover {
-  transform: scale(1.05);
-  box-shadow: 0 4px 8px rgba(80, 80, 80, 0.2);
-}
-
 /* CARDS */
 #games-list-section {
   margin: 1rem 0;
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
   gap: 1rem;
 }
 
@@ -112,12 +109,13 @@ h1 {
 }
 
 .card {
+  text-align: center;
   border: 1px solid #ccc;
   border-radius: 5px;
   overflow: hidden;
   padding: 1rem;
 
-  width: 300px;
+  width: 280px;
   height: 100%;
   transition: transform 0.2s ease-in-out;
   position: relative;
@@ -133,13 +131,19 @@ h1 {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-h3 {
+.card-header {
+  height: 65px;
+}
+
+.card-header h3 {
+  overflow: hidden;
+  text-overflow: ellipsis;
   margin-top: 0.7rem;
 }
 
 .card-body {
   font-style: italic;
-  color: #45a35d;
+  color: var(--second-color);
   font-weight: bold;
 }
 
@@ -147,7 +151,7 @@ h3 {
 .favorite-game-detail-btn {
   border: none;
   background-color: inherit;
-  color: rgb(231, 231, 5);
+  color: #ffc107;
   padding: 0;
   margin: 0;
 }
@@ -161,7 +165,7 @@ h3 {
 
 .favorite-game-btn .fa-star,
 .favorite-game-detail-btn .fa-star {
-  transition: transform 0.2s ease-in-out;
+  transition: transform 0.3s ease-in-out;
 }
 
 .favorite-game-btn:hover .fa-star,
@@ -171,37 +175,97 @@ h3 {
 }
 
 /* GAME DETAIL */
-#game-detail-header {
-  display: flex;
-  align-items: center;
-}
-
-#game-detail-header h2 {
-  margin: 0.5rem;
-}
-
-#game-detail-header button {
-  margin-right: 0.3rem;
+#game-card-section {
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
 }
 
 #back-btn {
   font-size: 1rem;
   padding: 0.3rem 0.8rem;
-
   background-color: var(--second-color);
   color: white;
-  border: 1px solid var(--border-color);
+  border: none;
   border-radius: 7px;
-
   transition: transform 0.2s ease-in-out;
+  margin-bottom: 15px;
 }
 
 #back-btn:hover {
   transform: scale(1.05);
   cursor: pointer;
-
   background-color: var(--third-color);
   box-shadow: 0 4px 8px rgba(204, 204, 204, 0.2);
+}
+
+#game-detail-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid #eee;
+}
+
+#game-detail-header h2 {
+  margin: 0.5rem;
+  font-size: 2rem;
+  color: var(--main-color);
+  flex-grow: 1;
+}
+
+#game-detail-header button {
+  margin-right: 0.3rem;
+  background: none;
+  border: none;
+  color: #ffc107;
+  cursor: pointer;
+  font-size: 1.5rem;
+  outline: none;
+}
+
+#game-detail-header button:hover {
+  opacity: 0.8;
+}
+
+#game-card-section > div > p {
+  line-height: 1.6;
+  margin-bottom: 10px;
+}
+
+#game-card-section > div > p > span {
+  font-weight: bold;
+  color: var(--second-color);
+}
+
+#game-card-section details {
+  margin-top: 15px;
+  border: 1px solid #eee;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+#game-card-section details summary {
+  font-weight: bold;
+  cursor: pointer;
+  padding-bottom: 5px;
+}
+
+#game-card-section details ul {
+  list-style: none;
+  padding-left: 0;
+  margin-top: 10px;
+}
+
+#game-card-section details li {
+  padding: 5px 0;
+  border-bottom: 1px dotted #eee;
+}
+
+#game-card-section details li:last-child {
+  border-bottom: none;
 }
 
 /* GAMES COMPARE */
@@ -209,23 +273,41 @@ h3 {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  margin-bottom: 1rem;
 }
+
 #add-compare-game-btn {
+  background-color: inherit;
   border: none;
-  color: green;
+  color: var(--second-color);
   cursor: pointer;
   padding: 0.4rem;
 }
 
+#add-compare-game-btn:disabled {
+  color: #b295b4;
+  cursor: default;
+}
+
 #compare-section {
-  margin: 2rem 0;
-  overflow-x: scroll;
+  overflow-x: auto;
+}
+
+#compare-table thead td {
+  padding: 0;
+  border-bottom: 1px solid var(--main-color);
+}
+
+.selection-game-cell {
+  height: 50px;
+  padding: 0;
 }
 
 .select-game {
   display: flex;
   align-items: center;
   position: relative;
+  height: 100%;
 }
 
 .select-game button {
@@ -243,16 +325,72 @@ h3 {
 .select-game button:hover {
   cursor: pointer;
 }
+
 .title-bar,
 .title-bar-default {
-  width: 300px;
+  height: 100%;
+  width: 280px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  border: none;
+  border-right: 1px solid var(--main-color);
+  border-bottom: 1px solid var(--main-color);
+  border-radius: 0;
+  cursor: pointer;
 }
 
 .select-game .title-bar {
   padding-left: 2rem;
+}
+
+#compare-table {
+  border-collapse: collapse;
+  width: 100%;
+  border: 1px solid #ccc;
+}
+
+#compare-table thead .header-cell {
+  background-color: var(--main-color);
+  color: white;
+  font-weight: bold;
+  text-align: left;
+  padding: 1rem;
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  border-bottom: 2px solid var(--border-color);
+}
+
+#compare-table .header-cell,
+#compare-table .compare-cell {
+  padding: 0.5rem;
+  text-align: center;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.compare-cell {
+  width: 280px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#compare-table th {
+  text-align: left;
+  height: 55px;
+}
+
+#compare-table th:first-child {
+  position: sticky;
+  left: 0;
+  background-color: var(--main-color);
+  border-left: var(--main-color);
+  color: white;
+  z-index: 2;
+}
+
+#compare-table tbody tr:last-child td {
+  border-bottom: none;
 }
 
 /* SIDEBAR */
@@ -274,10 +412,13 @@ h3 {
   border: none;
   cursor: pointer;
   padding: 0.3rem;
+
+  color: white;
+  background-color: inherit;
 }
 
 #favorite-sidebar-closebtn button:hover {
-  color: #b40000;
+  color: #b30101;
 }
 
 #favorite-sidebar-container {
@@ -290,8 +431,9 @@ h3 {
   width: 270px;
   height: 100%;
 
-  background-color: #f1f1f1;
-  border-left: 1px solid rgb(207, 207, 207);
+  background-color: var(--backgroud-sidebar);
+  color: white;
+  border-left: 1px solid var(--border-color);
 
   transition: transform 0.3s ease-in-out;
   transform: translateX(0);
@@ -309,11 +451,11 @@ h3 {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.3rem 0;
+  padding: 0.3rem 0.3rem;
 }
 
 .favorite-game-item:hover {
-  background-color: #d4d4d4;
+  background-color: var(--second-color);
 }
 
 .remove-favorite-game {
@@ -321,7 +463,7 @@ h3 {
   transition: opacity 0.2s ease-in-out;
 
   border: none;
-  color: rgb(170, 0, 0);
+  color: #6b0000;
   cursor: pointer;
   padding: 0.3rem;
   background: none;

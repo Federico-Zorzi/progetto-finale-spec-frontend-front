@@ -51,35 +51,33 @@ const GamePage = () => {
               </div>
               <div>
                 <p>
-                  Data di rilascio:{" "}
+                  DATA DI RILASCIO:{" "}
                   <span>
                     {dayjs(gameSelected.releaseDate).format("DD/MM/YYYY")}
                   </span>
                 </p>
-                <p>Casa di produzione: {gameSelected.softwareHouse.name}</p>
                 <p>
-                  Categoria: <span>{gameSelected.category}</span>
-                </p>
-                {gameSelected.subCategories && (
-                  <p>
-                    Sottocategoria:{" "}
-                    <span>{gameSelected.subCategories.join(", ")}</span>
-                  </p>
-                )}
-                <p>
-                  Prezzo:{" "}
+                  PREZZO:{" "}
                   {gameSelected.price ? (
                     <span>{gameSelected.price}€</span>
                   ) : (
-                    "Gratis"
+                    <span>Gratis</span>
                   )}
                 </p>
-                <p>Piattaforme: {gameSelected.platforms.join(", ")}</p>
-                <p>Modalità di gioco: {gameSelected.gameModes.join(", ")}</p>
-
-                {gameSelected.description && (
-                  <p>Descrizione: {gameSelected.description}</p>
+                <p>
+                  CATEGORIA: <span>{gameSelected.category}</span>
+                </p>
+                {gameSelected.subCategories && (
+                  <p>
+                    SOTTOCATEGORIA:{" "}
+                    <span>{gameSelected.subCategories.join(", ")}</span>
+                  </p>
                 )}
+                <p>SVILUPPATORE: {gameSelected.softwareHouse.name}</p>
+                <p>PIATTAFORME: {gameSelected.platforms.join(", ")}</p>
+                <p>MODALITA' DI GIOCO: {gameSelected.gameModes.join(", ")}</p>
+
+                {gameSelected.description && <p>{gameSelected.description}</p>}
                 {gameSelected.ratings && (
                   <details>
                     <summary>Valutazioni</summary>

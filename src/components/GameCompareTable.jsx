@@ -1,36 +1,47 @@
+import dayjs from "dayjs";
 import { memo } from "react";
 
 const GameCompareTable = memo(({ games }) => {
   return (
     <>
-      <tr>
-        <th>Data di rilascio:</th>
+      <tr className="compare-row">
+        <th className="header-cell">Data di rilascio:</th>
         {games.map((g, i) => (
-          <td key={i}>{g?.releaseDate || "-"}</td>
+          <td key={i} className="compare-cell">
+            {g.releaseDate ? dayjs(g?.releaseDate).format("DD/MM/YYYY") : "-"}
+          </td>
         ))}
       </tr>
-      <tr>
-        <th>Casa di produzione:</th>
+      <tr className="compare-row">
+        <th className="header-cell">Casa di produzione:</th>
         {games.map((g, i) => (
-          <td key={i}>{g?.softwareHouse?.name || "-"}</td>
+          <td key={i} className="compare-cell">
+            {g?.softwareHouse?.name || "-"}
+          </td>
         ))}
       </tr>
-      <tr>
-        <th>Prezzo:</th>
+      <tr className="compare-row">
+        <th className="header-cell">Prezzo:</th>
         {games.map((g, i) => (
-          <td key={i}>{g?.price ? `${g.price}€` : "-"}</td>
+          <td key={i} className="compare-cell">
+            {g?.price ? `${g.price}€` : "-"}
+          </td>
         ))}
       </tr>
-      <tr>
-        <th>Piattaforme:</th>
+      <tr className="compare-row">
+        <th className="header-cell">Piattaforme:</th>
         {games.map((g, i) => (
-          <td key={i}>{g?.platforms?.join(", ") || "-"}</td>
+          <td key={i} className="compare-cell">
+            {g?.platforms?.join(", ") || "-"}
+          </td>
         ))}
       </tr>
-      <tr>
-        <th>Modalità di gioco:</th>
+      <tr className="compare-row">
+        <th className="header-cell">Modalità di gioco:</th>
         {games.map((g, i) => (
-          <td key={i}>{g?.gameModes?.join(", ") || "-"}</td>
+          <td key={i} className="compare-cell">
+            {g?.gameModes?.join(", ") || "-"}
+          </td>
         ))}
       </tr>
     </>

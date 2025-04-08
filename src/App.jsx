@@ -6,6 +6,7 @@ import GamesListPage from "./pages/GamesListPage";
 import GamePage from "./pages/GamePage";
 
 import { GlobalContextProvider } from "./context/GlobalContext";
+import AddGamePage from "./pages/AddGamePage";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Routes>
           <Route element={<DefaultLayout />}>
             <Route path="/" element={<GamesListPage />}></Route>
+            <Route path="/AddGame" element={<AddGamePage />}></Route>
             <Route path="/:id" element={<GamePage />}></Route>
           </Route>
         </Routes>

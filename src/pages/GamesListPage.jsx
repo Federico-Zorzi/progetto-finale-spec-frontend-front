@@ -39,7 +39,7 @@ const GamesListPage = () => {
     [gamesList]
   );
 
-  /* search by game title */
+  /* Search by game title */
   const handleSearch = useCallback(
     debounce((e) => {
       setTitleFilter(e.target.value);
@@ -211,12 +211,12 @@ const GamesListPage = () => {
         </button>
       </div>
       <section id="compare-section">
-        <table>
+        <table id="compare-table">
           <tbody>
             <tr>
               <th></th>
               {compareGamesSelections.map((g, i) => (
-                <td key={i}>
+                <td key={i} className="selection-game-cell">
                   <div className="select-game">
                     {i > 1 && (
                       <button

@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { createPortal } from "react-dom";
+import { Link, useNavigate } from "react-router-dom";
 import FavoriteSideBar from "../FavoriteSideBar";
-import { Link } from "react-router-dom";
 
 const Header = () => {
   const [showSideBar, setShowSideBar] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <header>
@@ -12,12 +13,17 @@ const Header = () => {
         <Link to={"/"}>
           <i className="fa-solid fa-gamepad fa-2xl"></i>
         </Link>
-        <button
-          id="favorite-list"
-          onClick={() => setShowSideBar((curr) => !curr)}
-        >
-          Lista dei Preferiti
-        </button>
+        <div>
+          {/* <button className="header-btns" onClick={() => navigate(`/AddGame`)}>
+            Aggiungi giochi
+          </button> */}
+          <button
+            className="header-btns"
+            onClick={() => setShowSideBar((curr) => !curr)}
+          >
+            Lista dei Preferiti
+          </button>
+        </div>
 
         {createPortal(
           <FavoriteSideBar
