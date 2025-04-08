@@ -213,6 +213,7 @@ h3 {
 /* GAMES COMPARE */
 #compare-section {
   margin: 2rem 0;
+  overflow-x: scroll;
 }
 
 /* SIDEBAR */

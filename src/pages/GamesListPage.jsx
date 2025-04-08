@@ -38,7 +38,11 @@ const GamesListPage = () => {
 
   /* Categories for filter by category */
   const categories = useMemo(
-    () => gamesList.map((g) => g.category),
+    () =>
+      gamesList.reduce((acc, curr) => {
+        if (!acc.includes(curr.category)) acc.push(curr.category);
+        return acc;
+      }, []),
     [gamesList]
   );
 

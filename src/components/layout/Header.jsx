@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 
 const Header = () => {
   const [showSideBar, setShowSideBar] = useState(false);
-  console.log("showSideBars", showSideBar);
 
   return (
     <header>
