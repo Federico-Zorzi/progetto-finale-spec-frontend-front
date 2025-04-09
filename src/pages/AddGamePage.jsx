@@ -35,8 +35,10 @@ const AddGamePage = () => {
   const title = useRef();
   const category = useRef();
   const softwarehouseName = useRef();
-  const [selectedPlatforms, setSelectedPlatforms] = useState([]);
-  const [selectedGameModes, setSelectedGameModes] = useState([]);
+  const [selectedPlatforms, setSelectedPlatforms] = useState(["PC"]);
+  const [selectedGameModes, setSelectedGameModes] = useState(["Singleplayer"]);
+
+  const [errorMsg, setErrorMsg] = useState("");
 
   const handleChange = (name, values, setState) => {
     setState(values);
@@ -44,6 +46,7 @@ const AddGamePage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setErrorMsg("");
 
     addGame(
       title.current.value,
@@ -51,99 +54,95 @@ const AddGamePage = () => {
       softwarehouseName.current.value,
       selectedPlatforms,
       selectedGameModes
-    );
+    )
+      .then((data) => {
+        if (data.videogame && data.videogame.title) {
+          alert(`Gioco "${data.videogame.title}" aggiunto con successo!`);
+        } else alert("Gioco aggiunto con successo!");
+        navigate(`/`);
+      })
+      .catch((error) => {
+        setErrorMsg(error.message);
+      });
   };
 
   return (
-    <>
-      <main>
-        <section id="add-game-section">
-          <button id="back-btn" onClick={() => navigate(`/`)}>
-            ← Indietro
-          </button>
+    <main>
+      <section id="add-game-section">
+        <button id="back-btn" onClick={() => navigate(`/`)}>
+          ← Indietro
+        </button>
 
-          <form onSubmit={handleSubmit}>
-            {/* title */}
-            <div className="input-container">
-              <label htmlFor="title">Titolo: </label>
-              <input id="title" type="text" ref={title} />
-            </div>
+        <form onSubmit={handleSubmit}>
+          {/* title */}
+          <div className="input-container">
+            <label htmlFor="title">Titolo: </label>
+            <input id="title" type="text" ref={title} />
+          </div>
 
-            <hr />
+          {/* category */}
+          <div className="input-container">
+            <label htmlFor="category">Categoria: </label>
+            <select id="category" ref={category} required>
+              <option value="">Seleziona categoria...</option>
+              {mainCategories.map((c, i) => (
+                <option key={i} value={c}>
+                  {c}
+                </option>
+              ))}
+            </select>
+          </div>
 
-            {/* category */}
-            <div className="input-container">
-              <label htmlFor="category">Categoria: </label>
-              <select id="category" ref={category}>
-                <option value="">Seleziona categoria...</option>
-                {mainCategories.map((c, i) => (
-                  <option key={i} value={c}>
-                    {c}
-                  </option>
-                ))}
-              </select>
-            </div>
+          {/* platform */}
+          <div className="input-container">
+            <CheckboxGroup
+              label="Piattaforme:"
+              name="platforms"
+              options={platforms}
+              onChange={handleChange}
+              defaultValues={["PC"]}
+              setState={setSelectedPlatforms}
+            />
+          </div>
 
-            <hr />
+          {/* game modes */}
+          <div className="input-container">
+            <CheckboxGroup
+              label="Modalità di gioco:"
+              name="gamemodes"
+              options={gameModes}
+              onChange={handleChange}
+              defaultValues={["Singleplayer"]}
+              setState={setSelectedGameModes}
+            />
+          </div>
 
-            {/* platform */}
-            <div className="input-container">
-              <CheckboxGroup
-                label="Piattaforme:"
-                name="platforms"
-                options={platforms}
-                onChange={handleChange}
-                defaultValues={["PC"]}
-                setState={setSelectedPlatforms}
-              />
-            </div>
+          {/* softwarehouse name */}
+          <div className="input-container">
+            <label htmlFor="softwarehouse-name">Casa di sviluppo: </label>
+            <input
+              id="softwarehouse-name"
+              type="text"
+              ref={softwarehouseName}
+            />
+          </div>
 
-            <hr />
+          <button type="submit">Invia form</button>
+        </form>
 
-            {/* game modes */}
-            <div className="input-container">
-              <CheckboxGroup
-                label="Modalità di gioco:"
-                name="gamemodes"
-                options={gameModes}
-                onChange={handleChange}
-                defaultValues={["Singleplayer"]}
-                setState={setSelectedGameModes}
-              />
-            </div>
-
-            <hr />
-
-            {/* softwarehouse name */}
-            <div className="input-container">
-              <label htmlFor="softwarehouse-name">Casa di sviluppo: </label>
-              <input
-                id="softwarehouse-name"
-                type="text"
-                ref={softwarehouseName}
-              />
-            </div>
-
-            <button type="submit">Invia form</button>
-          </form>
-        </section>
-      </main>
-    </>
+        {errorMsg && (
+          <div className="error-alert">
+            <p>{errorMsg}</p>
+          </div>
+        )}
+      </section>
+    </main>
   );
 };
 
 export default AddGamePage;
 
 /* 
-type SoftwareHouse = {
-  name: string;
-  country: string;
-  foundedYear: number;
-  parentCompany?: string;
-  studios?: string[];
-  website?: string;
-};
-
 export type Videogame = {
   readonly title: string;
   readonly originalTitle?: string;

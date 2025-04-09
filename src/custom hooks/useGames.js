@@ -5,6 +5,9 @@ function reducerGames(gamesList, action) {
     case "SET_GAMES":
       return action.payload;
 
+    case "ADD_GAME":
+      return [...gamesList, action.payload];
+
     default:
       return gamesList;
   }
@@ -27,28 +30,68 @@ const useGames = () => {
         const games = await resGames.json();
         dispatch({ type: "SET_GAMES", payload: games });
       } catch (error) {
-        console.error(error);
+        return error;
       }
     };
     fetchGames();
   }, []);
 
-  const addGame = (title, category, softwareHouse, platforms, gamemodes) => {
-    console.log("try", title, category, softwareHouse, platforms, gamemodes);
-
-    /* try {
-      const resGames = await fetch(`${apiUrl}/videogames`, {
+  const addGame = async (
+    title,
+    category,
+    softwarehouseName,
+    platforms,
+    gameModes
+  ) => {
+    try {
+      const resFetchGame = await fetch(`${apiUrl}/videogames`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           title,
           category,
           platforms,
-          gamemodes,
-          softwareHouse: { softwarehouseName },
+          gameModes,
+          softwareHouse: { name: softwarehouseName },
         }),
       });
-    } catch (error) {} */
+
+      if (!resFetchGame.ok)
+        throw new Error(
+          `Errore HTTP ${resFetchGame.status} nell'aggiunta del nuovo gioco`
+        );
+
+      const resGame = await resFetchGame.json();
+
+      if (!resGame.success || resGame.error) {
+        let errorMessage = resGame.error || "Errore sconosciuto dal server.";
+
+        if (
+          resGame.details &&
+          Array.isArray(resGame.details) &&
+          resGame.details.length > 0
+        ) {
+          const detailsMessages = resGame.details
+            .map((d) => `${d.field} - ${d.message}`)
+            .join("\n");
+
+          errorMessage += `\nDettagli:\n${detailsMessages}`;
+          console.log("errorMessage", errorMessage);
+        }
+        throw new Error(errorMessage);
+      }
+
+      dispatch({ type: "ADD_GAME", payload: resGame.videogame });
+      return resGame;
+    } catch (err) {
+      /* 
+      {error: 'Invalid videogame data',
+      details: 
+      0: {field: 'platforms', message: 'Array must contain at least 1 element(s)'}
+      1: {field: 'gameModes', message: 'Array must contain at least 1 element(s)'}
+      }      */
+      throw err;
+    }
   };
 
   return { gamesList, addGame };

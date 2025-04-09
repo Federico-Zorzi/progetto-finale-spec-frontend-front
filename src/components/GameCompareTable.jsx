@@ -2,6 +2,8 @@ import dayjs from "dayjs";
 import { memo } from "react";
 
 const GameCompareTable = memo(({ games }) => {
+  console.log("game1", games[0]);
+
   return (
     <>
       <tr className="compare-row">
