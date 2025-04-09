@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import CheckboxGroup from "../components/CheckboxGroup";
 import { useGlobalContext } from "../context/GlobalContext";
+import dayjs from "dayjs";
 
 const mainCategories = [
   "Action",
@@ -35,6 +36,8 @@ const AddGamePage = () => {
   const title = useRef();
   const category = useRef();
   const softwarehouseName = useRef();
+  const releaseDate = useRef();
+  const price = useRef();
   const [selectedPlatforms, setSelectedPlatforms] = useState(["PC"]);
   const [selectedGameModes, setSelectedGameModes] = useState(["Singleplayer"]);
 
@@ -47,13 +50,17 @@ const AddGamePage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setErrorMsg("");
+    const currDate = new Date();
+    const currDateFormatted = dayjs(currDate).format("YYYY-MM-DD");
 
     addGame(
       title.current.value,
       category.current.value,
       softwarehouseName.current.value,
       selectedPlatforms,
-      selectedGameModes
+      selectedGameModes,
+      releaseDate.current.value || currDateFormatted,
+      parseFloat(price.current.value) || 0
     )
       .then((data) => {
         if (data.videogame && data.videogame.title) {
@@ -127,7 +134,25 @@ const AddGamePage = () => {
             />
           </div>
 
-          <button type="submit">Invia form</button>
+          {/* release date */}
+          <div className="input-container">
+            <label htmlFor="release-date">* Data di rilascio: </label>
+            <input id="release-date" type="date" ref={releaseDate} />
+          </div>
+
+          {/* price */}
+          <div className="input-container">
+            <label htmlFor="release-date">* Prezzo €: </label>
+            <input id="release-date" type="number" step="any" ref={price} />
+          </div>
+
+          {/* form info  */}
+          <div id="info">
+            <p>I campi con * sono opzionali</p>
+          </div>
+
+          {/* button for submit */}
+          <button type="submit">Aggiungi</button>
         </form>
 
         {errorMsg && (
@@ -141,53 +166,3 @@ const AddGamePage = () => {
 };
 
 export default AddGamePage;
-
-/* 
-export type Videogame = {
-  readonly title: string;
-  readonly originalTitle?: string;
-  readonly category: MainCategory;
-
-  readonly subCategories?: SubCategory[];
-  readonly platforms: [Platform, ...Platform[]];
-  readonly softwareHouse: SoftwareHouse;
-  readonly publisher?: string;
-  readonly engine?: string;
-
-  gameModes: [GameMode, ...GameMode[]];
-  supportedLanguages?: string[];
-  ageRating?:
-    | "PEGI 3"
-    | "PEGI 7"
-    | "PEGI 12"
-    | "PEGI 16"
-    | "PEGI 18"
-    | "ESRB E"
-    | "ESRB T"
-    | "ESRB M";
-
-  releaseDate?: string;
-  earlyAccessDate?: string;
-  lastUpdate?: string;
-
-  description?: string;
-  features?: string[];
-  dlcs?: DLC[];
-
-  systemRequirements?: SystemRequirements;
-
-  price?: number;
-  discount?: number;
-  inGamePurchases?: boolean;
-  ratings?: Rating[];
-  averageRating?: number;
-  averagePlaytime?: string;
-  totalSales?: number;
-
-  coverImage?: string;
-  screenshots?: string[];
-  trailerUrl?: string;
-};
-
-  
-*/

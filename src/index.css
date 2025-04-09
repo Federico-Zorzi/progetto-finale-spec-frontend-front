@@ -510,6 +510,8 @@ h1 {
 }
 
 #add-game-section .input-container input[type="text"],
+#add-game-section .input-container input[type="date"],
+#add-game-section .input-container input[type="number"],
 #add-game-section .input-container select {
   padding: 0.7rem;
   border: 1px solid #ccc;
@@ -594,6 +596,10 @@ h1 {
 
 #add-game-section button[type="submit"]:hover {
   background-color: rgb(50, 0, 52);
+}
+
+#info p {
+  margin: 0;
 }
 
 /* ERROR ALERT */

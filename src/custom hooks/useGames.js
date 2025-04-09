@@ -41,7 +41,9 @@ const useGames = () => {
     category,
     softwarehouseName,
     platforms,
-    gameModes
+    gameModes,
+    releaseDate,
+    price
   ) => {
     try {
       const resFetchGame = await fetch(`${apiUrl}/videogames`, {
@@ -53,6 +55,8 @@ const useGames = () => {
           platforms,
           gameModes,
           softwareHouse: { name: softwarehouseName },
+          price,
+          releaseDate,
         }),
       });
 
