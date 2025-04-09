@@ -1,9 +1,10 @@
-import { useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import CheckboxGroup from "../components/CheckboxGroup";
-import { useGlobalContext } from "../context/GlobalContext";
 import dayjs from "dayjs";
+import { useMemo, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useGlobalContext } from "../context/GlobalContext";
+import CheckboxGroup from "../components/CheckboxGroup";
 
+/* options for select and checkbox group */
 const mainCategories = [
   "Action",
   "Adventure",
@@ -28,33 +29,45 @@ const gameModes = [
   "Cross-platform",
 ];
 
+/* initial value for checkbox */
+const initialPlatforms = ["PC"];
+const initialGameModes = ["Singleplayer"];
+
 const AddGamePage = () => {
   const navigate = useNavigate();
-  const { addGame } = useGlobalContext();
+  const { gamesList, addGame } = useGlobalContext();
 
   /* input values from form */
-  const title = useRef();
+  const [title, setTitle] = useState("");
+  const [selectedPlatforms, setSelectedPlatforms] = useState(["PC"]);
+  const [selectedGameModes, setSelectedGameModes] = useState(["Singleplayer"]);
+
+  console.log("selectedPlatforms", selectedPlatforms);
+  console.log("selectedGameModes", selectedGameModes);
+
   const category = useRef();
   const softwarehouseName = useRef();
   const releaseDate = useRef();
   const price = useRef();
-  const [selectedPlatforms, setSelectedPlatforms] = useState(["PC"]);
-  const [selectedGameModes, setSelectedGameModes] = useState(["Singleplayer"]);
 
   const [errorMsg, setErrorMsg] = useState("");
 
+  /* chackbox group handleChange */
   const handleChange = (name, values, setState) => {
     setState(values);
   };
 
+  /* submit for add a new game */
   const handleSubmit = (e) => {
     e.preventDefault();
     setErrorMsg("");
     const currDate = new Date();
     const currDateFormatted = dayjs(currDate).format("YYYY-MM-DD");
 
+    if (!isValidTitle || !isValidPlatforms || !isValidGamemodes) return;
+
     addGame(
-      title.current.value,
+      title,
       category.current.value,
       softwarehouseName.current.value,
       selectedPlatforms,
@@ -73,6 +86,26 @@ const AddGamePage = () => {
       });
   };
 
+  /* Input validation */
+  const isValidTitle = useMemo(() => {
+    const symbols = "!@#$%^&*()-_=+[]{}|;:'\\\",.<>?/`~";
+    return (
+      !title.split("").some((t) => symbols.includes(t)) &&
+      title.trim().length > 0 &&
+      !gamesList.some((g) => g.title.toLowerCase() === title.toLowerCase())
+    );
+  }, [title]);
+
+  const isValidPlatforms = useMemo(
+    () => selectedPlatforms.length > 0,
+    [selectedPlatforms]
+  );
+
+  const isValidGamemodes = useMemo(
+    () => selectedGameModes.length > 0,
+    [selectedGameModes]
+  );
+
   return (
     <main>
       <section id="add-game-section">
@@ -84,7 +117,18 @@ const AddGamePage = () => {
           {/* title */}
           <div className="input-container">
             <label htmlFor="title">Titolo: </label>
-            <input id="title" type="text" ref={title} />
+            <input
+              id="title"
+              type="text"
+              onChange={(e) => setTitle(e.target.value)}
+            />
+            {title && !isValidTitle && (
+              <p className="input-validation">
+                Il titolo non può essere vuoto, non può contenere caratteri
+                speciali e non può avere lo stesso nome di un altro gioco
+                presente nella lista.
+              </p>
+            )}
           </div>
 
           {/* category */}
@@ -107,9 +151,15 @@ const AddGamePage = () => {
               name="platforms"
               options={platforms}
               onChange={handleChange}
-              defaultValues={["PC"]}
+              defaultValues={initialPlatforms}
               setState={setSelectedPlatforms}
             />
+
+            {!isValidPlatforms && (
+              <p className="input-validation">
+                Deve esserci almeno una piattaforma selezionata.
+              </p>
+            )}
           </div>
 
           {/* game modes */}
@@ -119,9 +169,15 @@ const AddGamePage = () => {
               name="gamemodes"
               options={gameModes}
               onChange={handleChange}
-              defaultValues={["Singleplayer"]}
+              defaultValues={initialGameModes}
               setState={setSelectedGameModes}
             />
+
+            {!isValidGamemodes && (
+              <p className="input-validation">
+                Deve esserci almeno una modalità di gioco selezionata.
+              </p>
+            )}
           </div>
 
           {/* softwarehouse name */}
@@ -137,7 +193,13 @@ const AddGamePage = () => {
           {/* release date */}
           <div className="input-container">
             <label htmlFor="release-date">* Data di rilascio: </label>
-            <input id="release-date" type="date" ref={releaseDate} />
+            <input
+              id="release-date"
+              type="date"
+              ref={releaseDate}
+              min={0}
+              max={999}
+            />
           </div>
 
           {/* price */}
@@ -152,7 +214,12 @@ const AddGamePage = () => {
           </div>
 
           {/* button for submit */}
-          <button type="submit">Aggiungi</button>
+          <button
+            type="submit"
+            disabled={!isValidTitle || !isValidPlatforms || !isValidGamemodes}
+          >
+            Aggiungi
+          </button>
         </form>
 
         {errorMsg && (

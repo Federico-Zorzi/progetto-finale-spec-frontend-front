@@ -7,7 +7,7 @@ export const useGlobalContext = () => useContext(GlobalContext);
 
 export const GlobalContextProvider = ({ children }) => {
   const apiUrl = import.meta.env.VITE_API_URL;
-  const { gamesList, addGame } = useGames();
+  const { gamesList, addGame, removeGame, updateGame } = useGames();
   const { favoriteGamesList, addFavoriteGame, removeFavoriteGame } =
     useFavoriteGames();
 
@@ -33,6 +33,8 @@ export const GlobalContextProvider = ({ children }) => {
     gamesList,
     fetchGame,
     addGame,
+    removeGame,
+    updateGame,
 
     favoriteGamesList,
     addFavoriteGame,

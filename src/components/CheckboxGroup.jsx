@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 const CheckboxGroup = ({
   label,
@@ -9,6 +9,15 @@ const CheckboxGroup = ({
   setState,
 }) => {
   const [checkedValues, setCheckedValues] = useState(defaultValues || []);
+  const isInitialRender = useRef(true);
+
+  /* rerender if defaultValues change */
+  useEffect(() => {
+    if (!isInitialRender.current) {
+      setCheckedValues(defaultValues || []);
+    }
+    isInitialRender.current = false;
+  }, [defaultValues]);
 
   const handleChange = (event) => {
     const value = event.target.value;
@@ -16,9 +25,11 @@ const CheckboxGroup = ({
 
     /* check if checkbox is checked or not and add or remove from checkedValues list */
     if (isChecked) {
-      setCheckedValues([...checkedValues, value]);
+      setCheckedValues((prevCheckedValues) => [...prevCheckedValues, value]);
     } else {
-      setCheckedValues(checkedValues.filter((v) => v !== value));
+      setCheckedValues((prevCheckedValues) =>
+        prevCheckedValues.filter((v) => v !== value)
+      );
     }
 
     /* execution of function onChange for add or remove elements from the list for the fetch */

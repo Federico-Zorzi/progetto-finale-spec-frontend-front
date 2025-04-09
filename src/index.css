@@ -27,7 +27,6 @@ main {
   max-width: 1000px;
   margin: auto;
   padding: 1rem;
-  height: 100vh;
 }
 
 a {
@@ -192,7 +191,6 @@ h1 {
   border: none;
   border-radius: 7px;
   transition: transform 0.2s ease-in-out;
-  margin-bottom: 15px;
 }
 
 #back-btn:hover {
@@ -492,60 +490,61 @@ h1 {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-#add-game-section form {
+form {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  margin-top: 1rem;
 }
 
-#add-game-section .input-container {
+.input-container {
   display: flex;
   flex-direction: column;
 }
 
-#add-game-section .input-container label {
+.input-container label {
   font-weight: bold;
   margin-bottom: 0.3rem;
   color: #333;
 }
 
-#add-game-section .input-container input[type="text"],
-#add-game-section .input-container input[type="date"],
-#add-game-section .input-container input[type="number"],
-#add-game-section .input-container select {
+.input-container input[type="text"],
+.input-container input[type="date"],
+.input-container input[type="number"],
+.input-container select {
   padding: 0.7rem;
   border: 1px solid #ccc;
   border-radius: 5px;
   font-size: 1rem;
 }
 
-#add-game-section .input-container select option {
+.input-container select option {
   font-size: 1rem;
 }
 
-#add-game-section .input-container .checkbox-group-container {
+.input-container .checkbox-group-container {
   margin-top: 0.5rem;
 }
 
-#add-game-section .input-container .checkbox-group-label {
+.input-container .checkbox-group-label {
   font-weight: bold;
   margin-bottom: 0.3rem;
   color: #333;
 }
 
-#add-game-section .input-container .input-container {
+.input-container .input-container {
   display: flex;
   flex-direction: row;
   gap: 1rem;
   flex-wrap: wrap;
 }
 
-#add-game-section .input-container .checkbox-item {
+.input-container .checkbox-item {
   display: flex;
   align-items: center;
 }
 
-#add-game-section .input-container .checkbox-item input[type="checkbox"] {
+.input-container .checkbox-item input[type="checkbox"] {
   appearance: none;
   background-color: #fff;
   border: 1px solid #ccc;
@@ -560,18 +559,12 @@ h1 {
   transition: background-color 0.2s ease;
 }
 
-#add-game-section
-  .input-container
-  .checkbox-item
-  input[type="checkbox"]:checked {
+.input-container .checkbox-item input[type="checkbox"]:checked {
   background-color: var(--main-color);
   border-color: var(--main-color);
 }
 
-#add-game-section
-  .input-container
-  .checkbox-item
-  input[type="checkbox"]:checked::before {
+.input-container .checkbox-item input[type="checkbox"]:checked::before {
   content: "\2713";
   color: white;
   font-size: 12px;
@@ -598,22 +591,144 @@ h1 {
   background-color: rgb(50, 0, 52);
 }
 
+#add-game-section button[type="submit"]:disabled {
+  background-color: rgb(183, 164, 184);
+}
+
+.input-validation {
+  color: #d32f2f;
+  font-size: 0.9rem;
+  margin-top: 0.2rem;
+  margin-bottom: 0;
+  font-style: italic;
+}
+
 #info p {
   margin: 0;
 }
 
 /* ERROR ALERT */
-
 .error-alert {
   margin-top: 1.5rem;
   background-color: #f44336;
   color: white;
-  padding: 0.8rem 1.2rem;
+  padding: 0.3rem 1.2rem;
   border-radius: 5px;
   text-align: center;
 }
 
 .error-alert p {
   white-space: pre-wrap;
-  margin: 0;
+}
+
+/* DELETE BUTTON */
+#detail-game-btns {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#detail-game-btns button {
+  color: white;
+  border: 0;
+  border-radius: 5px;
+  cursor: pointer;
+
+  padding: 0.5rem;
+}
+
+#detail-game-btns #update-btn {
+  background-color: #6bac57;
+}
+
+#detail-game-btns #delete-btn {
+  background-color: #af0000;
+  margin-left: 0.5rem;
+}
+
+/* MODAL */
+.modal {
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding-top: 10px;
+
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.modal.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal.show .modal-container {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.modal-container {
+  background-color: #fefefe;
+  border-radius: 5px;
+  width: 50%;
+  margin: 0 auto;
+  padding: 1rem;
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  transform: translateY(-100px);
+  opacity: 0;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+#modal-content {
+  margin-bottom: 1rem;
+}
+
+/* Close button */
+.close {
+  position: absolute;
+  top: 0;
+  right: 1rem;
+  font-size: 40px;
+  font-weight: bold;
+  color: #130c33;
+}
+
+.close:hover,
+.close:focus {
+  color: #f44336;
+  cursor: pointer;
+}
+
+.modal-btn {
+  display: flex;
+  gap: 1rem;
+}
+
+.modal-btn button {
+  width: 150px;
+  font-size: 1rem;
+  border: 1px solid rgb(209, 208, 208);
+  border-radius: 5px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+
+.cancelbtn {
+  background-color: #ccc;
+  color: black;
+}
+
+.confirmbtn {
+  color: white;
 }

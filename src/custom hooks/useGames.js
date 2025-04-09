@@ -8,6 +8,14 @@ function reducerGames(gamesList, action) {
     case "ADD_GAME":
       return [...gamesList, action.payload];
 
+    case "REMOVE_GAME":
+      return gamesList.filter((g) => g.id !== parseInt(action.payload));
+
+    case "UPDATE_GAME":
+      const { gameId, gameUpdated } = action.payload;
+
+      return gamesList.map((g) => (g.id === gameId ? gameUpdated : g));
+
     default:
       return gamesList;
   }
@@ -29,8 +37,8 @@ const useGames = () => {
 
         const games = await resGames.json();
         dispatch({ type: "SET_GAMES", payload: games });
-      } catch (error) {
-        return error;
+      } catch (err) {
+        throw err;
       }
     };
     fetchGames();
@@ -98,7 +106,62 @@ const useGames = () => {
     }
   };
 
-  return { gamesList, addGame };
+  const removeGame = async (gameId) => {
+    try {
+      const resFetchGame = await fetch(`${apiUrl}/videogames/${gameId}`, {
+        method: "DELETE",
+      });
+
+      if (!resFetchGame.ok)
+        throw new Error(
+          `Errore HTTP ${resFetchGame.status} nell'eliminazione del gioco`
+        );
+
+      const resGame = await resFetchGame.json();
+
+      if (!resGame.success)
+        throw new Error(
+          `Non è stato possibile eliminare il gioco con id:${gameId}`
+        );
+
+      dispatch({ type: "REMOVE_GAME", payload: gameId });
+      return resGame;
+    } catch (err) {
+      throw err;
+    }
+  };
+
+  const updateGame = async (gameId, gameModified) => {
+    try {
+      const resFetchGame = await fetch(`${apiUrl}/videogames/${gameId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(gameModified),
+      });
+
+      if (!resFetchGame.ok)
+        throw new Error(
+          `Errore HTTP ${resFetchGame.status} nella modifica del gioco`
+        );
+
+      const resGame = await resFetchGame.json();
+
+      if (!resGame.success)
+        throw new Error(
+          `Non è stato possibile modificare il gioco con id:${gameId}`
+        );
+
+      dispatch({
+        type: "UPDATE_GAME",
+        payload: { gameId, gameUpdated: resGame.videogame },
+      });
+      return resGame;
+    } catch (err) {
+      throw err;
+    }
+  };
+
+  return { gamesList, addGame, removeGame, updateGame };
 };
 
 export default useGames;
