@@ -43,9 +43,9 @@ const AddGamePage = () => {
   const [selectedPlatforms, setSelectedPlatforms] = useState(["PC"]);
   const [selectedGameModes, setSelectedGameModes] = useState(["Singleplayer"]);
   const [price, setPrice] = useState(0);
+  const [softwarehouseName, setSoftwarehouseName] = useState("");
 
   const category = useRef();
-  const softwarehouseName = useRef();
   const releaseDate = useRef();
 
   const [errorMsg, setErrorMsg] = useState("");
@@ -62,12 +62,18 @@ const AddGamePage = () => {
     const currDate = new Date();
     const currDateFormatted = dayjs(currDate).format("YYYY-MM-DD");
 
-    if (!isValidTitle || !isValidPlatforms || !isValidGamemodes) return;
+    if (
+      !isValidTitle ||
+      !isValidSoftwareHouse ||
+      !isValidPlatforms ||
+      !isValidGamemodes
+    )
+      return;
 
     addGame(
       title,
       category.current.value,
-      softwarehouseName.current.value,
+      softwarehouseName,
       selectedPlatforms,
       selectedGameModes,
       releaseDate.current.value || currDateFormatted,
@@ -94,6 +100,14 @@ const AddGamePage = () => {
     );
   }, [title]);
 
+  const isValidSoftwareHouse = useMemo(() => {
+    const symbols = "!@#$%^&*()-_=+[]{}|;:'\\\",.<>?/`~";
+    return (
+      !softwarehouseName.split("").some((n) => symbols.includes(n)) &&
+      softwarehouseName.trim().length > 0
+    );
+  }, [softwarehouseName]);
+
   const isValidPlatforms = useMemo(
     () => selectedPlatforms.length > 0,
     [selectedPlatforms]
@@ -109,10 +123,11 @@ const AddGamePage = () => {
     const newValue = e.target.value;
     /* REGEX
       (^\\d*) start from 0.
+      {0,3} numbers limit before , 
       (\\.) optional point for decimals
       \\d{0,${decimalPlaces}})? check max num for decimals
     */
-    const regex = new RegExp(`^\\d*(\\.\\d{0,${decimalPlaces}})?$`);
+    const regex = new RegExp(`^\\d{0,3}(\\.\\d{0,${decimalPlaces}})?$`);
 
     /* checks whether the value is empty or respects the regex  */
     if (newValue === "" || regex.test(newValue)) {
@@ -201,9 +216,18 @@ const AddGamePage = () => {
             <input
               id="softwarehouse-name"
               type="text"
-              ref={softwarehouseName}
+              value={softwarehouseName}
+              onChange={(e) => setSoftwarehouseName(e.target.value)}
               maxLength={50}
             />
+
+            {softwarehouseName && !isValidSoftwareHouse && (
+              <p className="input-validation">
+                Il nome della casa di sviluppo non può essere vuoto, non può
+                contenere caratteri speciali e non può avere lo stesso nome di
+                un altro gioco presente nella lista.
+              </p>
+            )}
           </div>
 
           {/* release date */}
@@ -234,7 +258,12 @@ const AddGamePage = () => {
           {/* button for submit */}
           <button
             type="submit"
-            disabled={!isValidTitle || !isValidPlatforms || !isValidGamemodes}
+            disabled={
+              !isValidTitle ||
+              !isValidSoftwareHouse ||
+              !isValidPlatforms ||
+              !isValidGamemodes
+            }
           >
             Aggiungi
           </button>

@@ -78,10 +78,11 @@ const EditGameModal = ({
     const newValue = e.target.value;
     /* REGEX
       (^\\d*) start from 0.
+      {0,3} numbers limit before ,
       (\\.) optional point for decimals
       \\d{0,${decimalPlaces}})? check max num for decimals
     */
-    const regex = new RegExp(`^\\d*(\\.\\d{0,${decimalPlaces}})?$`);
+    const regex = new RegExp(`^\\d{0,3}(\\.\\d{0,${decimalPlaces}})?$`);
 
     /* checks whether the value is empty or respects the regex  */
     if (newValue === "" || regex.test(newValue)) {
