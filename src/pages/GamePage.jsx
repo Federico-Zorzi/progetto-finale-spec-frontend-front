@@ -44,8 +44,6 @@ const GamePage = () => {
     e.preventDefault();
     setErrorMsg("");
 
-    console.log(gameModified);
-
     updateGame(gameId, gameModified)
       .then((data) => fetchGame(id).then((data) => setGameSelected(data)))
       .catch((error) => setErrorMsg(error.message));

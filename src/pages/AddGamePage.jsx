@@ -50,8 +50,8 @@ const AddGamePage = () => {
 
   const [errorMsg, setErrorMsg] = useState("");
 
-  /* chackbox group handleChange */
-  const handleChange = (name, values, setState) => {
+  /* checkbox group handleChange */
+  const handleCheckboxChange = (name, values, setState) => {
     setState(values);
   };
 
@@ -165,7 +165,7 @@ const AddGamePage = () => {
               label="Piattaforme:"
               name="platforms"
               options={platforms}
-              onChange={handleChange}
+              onChange={handleCheckboxChange}
               defaultValues={initialPlatforms}
               setState={setSelectedPlatforms}
             />
@@ -183,7 +183,7 @@ const AddGamePage = () => {
               label="Modalità di gioco:"
               name="gamemodes"
               options={gameModes}
-              onChange={handleChange}
+              onChange={handleCheckboxChange}
               defaultValues={initialGameModes}
               setState={setSelectedGameModes}
             />

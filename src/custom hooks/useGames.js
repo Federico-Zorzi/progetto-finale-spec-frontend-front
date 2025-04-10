@@ -88,7 +88,6 @@ const useGames = () => {
             .join("\n");
 
           errorMessage += `\nDettagli:\n${detailsMessages}`;
-          console.log("errorMessage", errorMessage);
         }
         throw new Error(errorMessage);
       }
