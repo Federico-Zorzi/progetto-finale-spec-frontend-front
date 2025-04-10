@@ -138,6 +138,7 @@ const GamesListPage = () => {
           type="text"
           placeholder="Cerca un gioco..."
           onChange={handleSearch}
+          maxLength={50}
         />
 
         {/* sort by category */}

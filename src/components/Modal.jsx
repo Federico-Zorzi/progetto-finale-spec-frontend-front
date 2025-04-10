@@ -12,6 +12,7 @@ const Modal = ({
     buttonType: "button",
     buttonForm: "",
   },
+  disable = "false",
 }) => {
   return createPortal(
     <div className={`modal${show ? " show" : ""}`}>
@@ -33,6 +34,7 @@ const Modal = ({
             className="confirmbtn"
             onClick={onConfirm}
             style={{ backgroundColor: confirmButton.confirmColor }}
+            disabled={disable === "true"}
           >
             {confirmButton.confirmText}
           </button>

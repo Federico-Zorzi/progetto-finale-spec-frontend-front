@@ -32,6 +32,7 @@ const gameModes = [
 /* initial value for checkbox */
 const initialPlatforms = ["PC"];
 const initialGameModes = ["Singleplayer"];
+const decimalPlaces = 2;
 
 const AddGamePage = () => {
   const navigate = useNavigate();
@@ -41,11 +42,11 @@ const AddGamePage = () => {
   const [title, setTitle] = useState("");
   const [selectedPlatforms, setSelectedPlatforms] = useState(["PC"]);
   const [selectedGameModes, setSelectedGameModes] = useState(["Singleplayer"]);
+  const [price, setPrice] = useState(0);
 
   const category = useRef();
   const softwarehouseName = useRef();
   const releaseDate = useRef();
-  const price = useRef();
 
   const [errorMsg, setErrorMsg] = useState("");
 
@@ -70,7 +71,7 @@ const AddGamePage = () => {
       selectedPlatforms,
       selectedGameModes,
       releaseDate.current.value || currDateFormatted,
-      parseFloat(price.current.value) || 0
+      parseFloat(price) || 0
     )
       .then((data) => {
         if (data.videogame && data.videogame.title) {
@@ -103,6 +104,22 @@ const AddGamePage = () => {
     [selectedGameModes]
   );
 
+  /* handlePriceChange for validation price */
+  const handlePriceChange = (e) => {
+    const newValue = e.target.value;
+    /* REGEX
+      (^\\d*) start from 0.
+      (\\.) optional point for decimals
+      \\d{0,${decimalPlaces}})? check max num for decimals
+    */
+    const regex = new RegExp(`^\\d*(\\.\\d{0,${decimalPlaces}})?$`);
+
+    /* checks whether the value is empty or respects the regex  */
+    if (newValue === "" || regex.test(newValue)) {
+      setPrice(newValue);
+    }
+  };
+
   return (
     <main>
       <section id="add-game-section">
@@ -118,6 +135,7 @@ const AddGamePage = () => {
               id="title"
               type="text"
               onChange={(e) => setTitle(e.target.value)}
+              maxLength={50}
             />
             {title && !isValidTitle && (
               <p className="input-validation">
@@ -184,25 +202,28 @@ const AddGamePage = () => {
               id="softwarehouse-name"
               type="text"
               ref={softwarehouseName}
+              maxLength={50}
             />
           </div>
 
           {/* release date */}
           <div className="input-container">
             <label htmlFor="release-date">* Data di rilascio: </label>
-            <input
-              id="release-date"
-              type="date"
-              ref={releaseDate}
-              min={0}
-              max={999}
-            />
+            <input id="release-date" type="date" ref={releaseDate} />
           </div>
 
           {/* price */}
           <div className="input-container">
             <label htmlFor="release-date">* Prezzo €: </label>
-            <input id="release-date" type="number" step="any" ref={price} />
+            <input
+              id="release-date"
+              type="number"
+              step="any"
+              value={price}
+              onChange={handlePriceChange}
+              min={0}
+              max={600}
+            />
           </div>
 
           {/* form info  */}

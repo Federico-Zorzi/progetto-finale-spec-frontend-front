@@ -1,7 +1,10 @@
+import React from "react";
+import { Link } from "react-router-dom";
 import { useGlobalContext } from "../context/GlobalContext";
 
 const FavoriteSideBar = ({ show = false, onClose }) => {
   const { favoriteGamesList, removeFavoriteGame } = useGlobalContext();
+
   return (
     <div id="favorite-sidebar-container" className={show ? "" : "hidden"}>
       <div id="favorite-sidebar-header">
@@ -17,13 +20,21 @@ const FavoriteSideBar = ({ show = false, onClose }) => {
           <ul>
             {favoriteGamesList.map((fg, i) => (
               <li key={i} className="favorite-game-item">
-                {fg.title}{" "}
-                <button
-                  className="remove-favorite-game"
-                  onClick={() => removeFavoriteGame(fg.id)}
+                <Link
+                  to={`/${fg.id}`}
+                  className="favorite-game-name"
+                  onClick={() => onClose()}
                 >
-                  <i className="fa-solid fa-square-minus fa-2xl"></i>
-                </button>
+                  {fg.title}
+                </Link>
+                <div className="remove-favorite-game">
+                  <button
+                    className="remove-favorite-btn"
+                    onClick={() => removeFavoriteGame(fg.id)}
+                  >
+                    <i className="fa-solid fa-square-minus fa-2xl"></i>
+                  </button>
+                </div>
               </li>
             ))}
           </ul>

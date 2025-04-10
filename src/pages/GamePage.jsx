@@ -28,7 +28,7 @@ const GamePage = () => {
 
   useEffect(() => {
     fetchGame(id).then((data) => setGameSelected(data));
-  }, []);
+  }, [id]);
 
   /* delete game function */
   const handleGameDelete = (gameId) => {

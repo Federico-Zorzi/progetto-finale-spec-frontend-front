@@ -26,6 +26,7 @@ const gameModes = [
   "Asynchronous",
   "Cross-platform",
 ];
+const decimalPlaces = 2;
 
 const EditGameModal = ({
   show = false,
@@ -71,6 +72,22 @@ const EditGameModal = ({
     () => selectedGameModesUpdated && selectedGameModesUpdated.length > 0,
     [selectedGameModesUpdated]
   );
+
+  /* handlePriceChange for validation price */
+  const handlePriceChange = (e) => {
+    const newValue = e.target.value;
+    /* REGEX
+      (^\\d*) start from 0.
+      (\\.) optional point for decimals
+      \\d{0,${decimalPlaces}})? check max num for decimals
+    */
+    const regex = new RegExp(`^\\d*(\\.\\d{0,${decimalPlaces}})?$`);
+
+    /* checks whether the value is empty or respects the regex  */
+    if (newValue === "" || regex.test(newValue)) {
+      setPriceUpdated(newValue);
+    }
+  };
 
   /* submit for update a new game */
   const handleSubmit = (e) => {
@@ -174,10 +191,10 @@ const EditGameModal = ({
               id="release-date"
               type="number"
               step="any"
-              onChange={(e) => setPriceUpdated(e.target.value)}
               value={priceUpdated}
+              onChange={handlePriceChange}
               min={0}
-              max={999}
+              max={600}
             />
           </div>
         </form>
@@ -190,6 +207,7 @@ const EditGameModal = ({
         buttonType: "submit",
         buttonForm: "form-modal",
       }}
+      disable={!isValidPlatforms || !isValidGamemodes ? "true" : "false"}
     />
   );
 };
