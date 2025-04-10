@@ -25,7 +25,7 @@ const FavoriteSideBar = ({ show = false, onClose }) => {
                   className="favorite-game-name"
                   onClick={() => onClose()}
                 >
-                  {fg.title}
+                  <p>{fg.title}</p>
                 </Link>
                 <div className="remove-favorite-game">
                   <button

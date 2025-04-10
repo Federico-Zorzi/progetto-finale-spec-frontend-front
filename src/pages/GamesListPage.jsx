@@ -3,6 +3,7 @@ import { useCallback, useMemo, useState } from "react";
 import { useGlobalContext } from "../context/GlobalContext";
 import GameCard from "../components/GameCard";
 import GameCompareTable from "../components/GameCompareTable";
+import { Link } from "react-router-dom";
 
 function debounce(callback, delay) {
   let timer;
@@ -166,9 +167,22 @@ const GamesListPage = () => {
         </select>
       </section>
 
+      <div id="number-results">
+        Risultati trovati: {gamesListFiltered.length}
+      </div>
+
       {/* games cards */}
       <section id="games-list-section">
-        {gamesListFiltered.length > 0 ? (
+        {/* card add game */}
+        <div className="card card-add-game">
+          <Link to={`/addGame`}>
+            <div className="card-header-add-game">
+              <span>+</span>
+            </div>
+          </Link>
+        </div>
+
+        {gamesListFiltered.length > 0 &&
           gamesListFiltered.map((g) => (
             <div className="card-container" key={g.id}>
               <GameCard game={g} />
@@ -190,10 +204,7 @@ const GamesListPage = () => {
                 ></i>
               </button>
             </div>
-          ))
-        ) : (
-          <p>Nessun gioco è stato trovato...</p>
-        )}
+          ))}
       </section>
 
       <hr />
