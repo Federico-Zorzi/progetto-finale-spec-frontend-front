@@ -65,10 +65,14 @@ const GamesListPage = () => {
               return b.title.localeCompare(a.title);
 
             case "category_asc":
-              return a.category.localeCompare(b.category);
+              return a.category.localeCompare(b.category) !== 0
+                ? a.category.localeCompare(b.category)
+                : a.title.localeCompare(b.title);
 
             case "category_desc":
-              return b.category.localeCompare(a.category);
+              return b.category.localeCompare(a.category) !== 0
+                ? b.category.localeCompare(a.category)
+                : b.title.localeCompare(a.title);
 
             default:
               return a.title.localeCompare(b.title);

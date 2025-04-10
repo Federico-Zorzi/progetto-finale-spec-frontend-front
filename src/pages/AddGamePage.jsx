@@ -42,9 +42,6 @@ const AddGamePage = () => {
   const [selectedPlatforms, setSelectedPlatforms] = useState(["PC"]);
   const [selectedGameModes, setSelectedGameModes] = useState(["Singleplayer"]);
 
-  console.log("selectedPlatforms", selectedPlatforms);
-  console.log("selectedGameModes", selectedGameModes);
-
   const category = useRef();
   const softwarehouseName = useRef();
   const releaseDate = useRef();
