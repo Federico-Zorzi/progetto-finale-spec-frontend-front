@@ -25,6 +25,11 @@ const GamesListPage = () => {
   const [categoryFilter, setCategoryFilter] = useState("");
   const [alphabeticOrder, setAlphabeticOrder] = useState("title_asc");
 
+  const [searchSelection, setSearchSelection] = useState(["", ""]);
+  const [isSuggestionVisible, setIsSuggestionVisible] = useState([
+    false,
+    false,
+  ]);
   const [compareGamesSelections, setCompareGamesSelections] = useState([
     { value: "", game: {} },
     { value: "", game: {} },
@@ -84,56 +89,6 @@ const GamesListPage = () => {
 
   /* COMPARE GAMES  */
   /* Title available for selection */
-  const getAvailableTitlesForCompare = useCallback(
-    (index) => {
-      return gamesList
-        .map((game) => game.title)
-        .filter((title) => {
-          if (compareGamesSelections[index].value === title) {
-            return true;
-          }
-
-          return !compareGamesSelections.some(
-            (selection, i) => i !== index && selection.value === title
-          );
-        });
-    },
-    [gamesList, compareGamesSelections]
-  );
-
-  /* Game selection management */
-  const handleGameSelectionChange = (index, event) => {
-    if (event.target.value) {
-      const gameSelected = gamesList.find(
-        (game) => game.title === event.target.value
-      );
-
-      fetchGame(gameSelected.id)
-        .then((data) => {
-          setCompareGamesSelections((prevSelections) =>
-            prevSelections.map((item, i) =>
-              i === index ? { ...item, value: data.title, game: data } : item
-            )
-          );
-        })
-        .catch((err) => console.error(err));
-    } else
-      setCompareGamesSelections((prevSelections) =>
-        prevSelections.map((item, i) =>
-          i === index ? { ...item, value: "", game: "" } : item
-        )
-      );
-  };
-
-  /* Games selected for create table */
-  const gamesForCompare = useMemo(() => {
-    return compareGamesSelections.map((g) => g.game);
-  }, [compareGamesSelections]);
-
-  /* TEST */
-  const [searchSelection, setSearchSelection] = useState(["", ""]);
-  console.log(searchSelection);
-
   const titlesAvailable = useMemo(() => {
     return searchSelection.map((s) =>
       gamesList.filter(
@@ -144,11 +99,13 @@ const GamesListPage = () => {
     );
   }, [searchSelection, compareGamesSelections]);
 
-  const handleGameSelectionChangeTest = (title, index, event) => {
+  /* Game selection management */
+  const handleGameSelectionChange = (title, index, event) => {
     const gameSelected = gamesList.find((game) => game.title === title);
     setSearchSelection((currVal) =>
       currVal.map((v, i) => (i === index ? title : v))
     );
+    setIsSuggestionVisible((currVal) => currVal.map((v, i) => false));
 
     fetchGame(gameSelected.id)
       .then((data) => {
@@ -160,6 +117,11 @@ const GamesListPage = () => {
       })
       .catch((err) => console.error(err));
   };
+
+  /* Games selected for create table */
+  const gamesForCompare = useMemo(() => {
+    return compareGamesSelections.map((g) => g.game);
+  }, [compareGamesSelections]);
 
   return (
     <main>
@@ -251,6 +213,7 @@ const GamesListPage = () => {
               { value: "", game: {} },
             ]);
             setSearchSelection((curr) => [...curr, ""]);
+            setIsSuggestionVisible((curr) => [...curr, false]);
           }}
           disabled={gamesList.length === compareGamesSelections.length}
         >
@@ -275,6 +238,9 @@ const GamesListPage = () => {
                           setSearchSelection((curr) =>
                             curr.filter((s, i) => index !== i)
                           );
+                          setIsSuggestionVisible((curr) =>
+                            curr.filter((s, i) => index !== i)
+                          );
                         }}
                       >
                         <i className="fa-solid fa-trash"></i>
@@ -288,36 +254,38 @@ const GamesListPage = () => {
                       }
                       placeholder="Cerca un gioco..."
                       value={searchSelection[index]}
-                      onChange={(e) =>
+                      onFocus={() =>
+                        setIsSuggestionVisible((curr) =>
+                          curr.map((v, i) => i === index)
+                        )
+                      }
+                      onChange={(e) => {
                         setSearchSelection((currVal) =>
                           currVal.map((v, i) =>
                             i === index ? e.target.value : v
                           )
-                        )
-                      }
+                        );
+                      }}
                       maxLength={50}
                     />
-                    {searchSelection[index].length > 0 && (
-                      <div className="suggestions-list">
-                        <ul>
-                          {titlesAvailable[index].map((g, i) => (
-                            <li key={i}>
-                              <button
-                                onClick={(e) =>
-                                  handleGameSelectionChangeTest(
-                                    g.title,
-                                    index,
-                                    e
-                                  )
-                                }
-                              >
-                                {g.title}
-                              </button>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
+                    {searchSelection[index].length > 0 &&
+                      isSuggestionVisible[index] && (
+                        <div className="suggestions-list">
+                          <ul>
+                            {titlesAvailable[index].map((g, i) => (
+                              <li key={i}>
+                                <button
+                                  onClick={(e) =>
+                                    handleGameSelectionChange(g.title, index, e)
+                                  }
+                                >
+                                  {g.title}
+                                </button>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
                   </div>
                 </td>
               ))}
