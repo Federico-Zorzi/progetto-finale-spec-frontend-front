@@ -5,6 +5,14 @@ const GameCompareTable = memo(({ games }) => {
   return (
     <>
       <tr className="compare-row">
+        <th className="header-cell">Titolo:</th>
+        {games.map((g, i) => (
+          <td key={i} className="compare-cell">
+            {g.title ?? "-"}
+          </td>
+        ))}
+      </tr>
+      <tr className="compare-row">
         <th className="header-cell">Data di rilascio:</th>
         {games.map((g, i) => (
           <td key={i} className="compare-cell">

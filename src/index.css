@@ -350,7 +350,58 @@ h1 {
   height: 100%;
 }
 
-.select-game button {
+.input-compare {
+  width: 280px;
+  height: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  padding: 0rem 1rem;
+  font-size: 1rem;
+  border: 1px solid rgb(151, 151, 151);
+}
+
+.fied-compare-with-delete {
+  padding: 0rem 2.5rem;
+}
+
+.suggestions-list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-top: none;
+  border-radius: 0 0 4px 4px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  overflow-y: auto;
+  max-height: 200px;
+}
+
+.suggestions-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.suggestions-list ul li button {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border: none;
+  background-color: transparent;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.suggestions-list ul li button:hover {
+  background-color: var(--second-color);
+  color: white;
+}
+
+.select-game .compare-trash-btn {
   position: absolute;
   left: 0.2rem;
   z-index: 1;
@@ -364,24 +415,6 @@ h1 {
 
 .select-game button:hover {
   cursor: pointer;
-}
-
-.title-bar,
-.title-bar-default {
-  height: 100%;
-  width: 280px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  border: none;
-  border-right: 1px solid var(--main-color);
-  border-bottom: 1px solid var(--main-color);
-  border-radius: 0;
-  cursor: pointer;
-}
-
-.select-game .title-bar {
-  padding-left: 2.3rem;
 }
 
 #compare-table {

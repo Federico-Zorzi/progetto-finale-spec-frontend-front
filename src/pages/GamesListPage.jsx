@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { useGlobalContext } from "../context/GlobalContext";
 import GameCard from "../components/GameCard";
@@ -130,6 +130,37 @@ const GamesListPage = () => {
     return compareGamesSelections.map((g) => g.game);
   }, [compareGamesSelections]);
 
+  /* TEST */
+  const [searchSelection, setSearchSelection] = useState(["", ""]);
+  console.log(searchSelection);
+
+  const titlesAvailable = useMemo(() => {
+    return searchSelection.map((s) =>
+      gamesList.filter(
+        (g) =>
+          !compareGamesSelections.some((game) => game.value === g.title) &&
+          g.title.toLocaleLowerCase().includes(s.toLocaleLowerCase())
+      )
+    );
+  }, [searchSelection, compareGamesSelections]);
+
+  const handleGameSelectionChangeTest = (title, index, event) => {
+    const gameSelected = gamesList.find((game) => game.title === title);
+    setSearchSelection((currVal) =>
+      currVal.map((v, i) => (i === index ? title : v))
+    );
+
+    fetchGame(gameSelected.id)
+      .then((data) => {
+        setCompareGamesSelections((prevSelections) =>
+          prevSelections.map((item, i) =>
+            i === index ? { ...item, value: data.title, game: data } : item
+          )
+        );
+      })
+      .catch((err) => console.error(err));
+  };
+
   return (
     <main>
       <section id="filters-section">
@@ -214,13 +245,13 @@ const GamesListPage = () => {
         <h2>Confronta giochi</h2>
         <button
           id="add-compare-game-btn"
-          onClick={() =>
-            gamesList.length !== compareGamesSelections.length &&
+          onClick={() => {
             setCompareGamesSelections((curr) => [
               ...curr,
               { value: "", game: {} },
-            ])
-          }
+            ]);
+            setSearchSelection((curr) => [...curr, ""]);
+          }}
           disabled={gamesList.length === compareGamesSelections.length}
         >
           <i className="fa-solid fa-square-plus fa-2xl"></i>
@@ -231,32 +262,62 @@ const GamesListPage = () => {
           <tbody>
             <tr>
               <th></th>
-              {compareGamesSelections.map((g, i) => (
-                <td key={i} className="selection-game-cell">
+              {searchSelection.map((input, index) => (
+                <td key={index} className="selection-game-cell">
                   <div className="select-game">
-                    {i > 1 && (
+                    {index > 1 && (
                       <button
-                        onClick={() =>
+                        className="compare-trash-btn"
+                        onClick={() => {
                           setCompareGamesSelections((curr) =>
-                            curr.filter((s, index) => index !== i)
-                          )
-                        }
+                            curr.filter((s, i) => index !== i)
+                          );
+                          setSearchSelection((curr) =>
+                            curr.filter((s, i) => index !== i)
+                          );
+                        }}
                       >
                         <i className="fa-solid fa-trash"></i>
                       </button>
                     )}
-                    <select
-                      className={"title-bar" + (i > 1 ? "" : "-default")}
-                      onChange={(e) => handleGameSelectionChange(i, e)}
-                      value={g.value}
-                    >
-                      <option value="">Seleziona il gioco...</option>
-                      {getAvailableTitlesForCompare(i).map((t, i) => (
-                        <option key={i} value={t}>
-                          {t}
-                        </option>
-                      ))}
-                    </select>
+                    <input
+                      type="text"
+                      className={
+                        "input-compare " +
+                        (index > 1 ? "fied-compare-with-delete" : "")
+                      }
+                      placeholder="Cerca un gioco..."
+                      value={searchSelection[index]}
+                      onChange={(e) =>
+                        setSearchSelection((currVal) =>
+                          currVal.map((v, i) =>
+                            i === index ? e.target.value : v
+                          )
+                        )
+                      }
+                      maxLength={50}
+                    />
+                    {searchSelection[index].length > 0 && (
+                      <div className="suggestions-list">
+                        <ul>
+                          {titlesAvailable[index].map((g, i) => (
+                            <li key={i}>
+                              <button
+                                onClick={(e) =>
+                                  handleGameSelectionChangeTest(
+                                    g.title,
+                                    index,
+                                    e
+                                  )
+                                }
+                              >
+                                {g.title}
+                              </button>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
                   </div>
                 </td>
               ))}
