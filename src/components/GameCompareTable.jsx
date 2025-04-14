@@ -32,7 +32,11 @@ const GameCompareTable = memo(({ games }) => {
         <th className="header-cell">Prezzo:</th>
         {games.map((g, i) => (
           <td key={i} className="compare-cell">
-            {g?.price ? `${g.price}€` : "-"}
+            {Object.keys(g).length === 0
+              ? "-"
+              : g.price
+              ? `${g.price}€`
+              : "Gratis"}
           </td>
         ))}
       </tr>

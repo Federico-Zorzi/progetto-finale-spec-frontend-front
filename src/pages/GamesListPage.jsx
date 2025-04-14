@@ -25,7 +25,7 @@ const GamesListPage = () => {
   const [categoryFilter, setCategoryFilter] = useState("");
   const [alphabeticOrder, setAlphabeticOrder] = useState("title_asc");
 
-  const [searchSelection, setSearchSelection] = useState(["", ""]);
+  const [compareSelection, setCompareSelection] = useState(["", ""]);
   const [isSuggestionVisible, setIsSuggestionVisible] = useState([
     false,
     false,
@@ -90,19 +90,19 @@ const GamesListPage = () => {
   /* COMPARE GAMES  */
   /* Title available for selection */
   const titlesAvailable = useMemo(() => {
-    return searchSelection.map((s) =>
+    return compareSelection.map((s) =>
       gamesList.filter(
         (g) =>
           !compareGamesSelections.some((game) => game.value === g.title) &&
           g.title.toLocaleLowerCase().includes(s.toLocaleLowerCase())
       )
     );
-  }, [searchSelection, compareGamesSelections]);
+  }, [compareSelection, compareGamesSelections]);
 
   /* Game selection management */
   const handleGameSelectionChange = (title, index, event) => {
     const gameSelected = gamesList.find((game) => game.title === title);
-    setSearchSelection((currVal) =>
+    setCompareSelection((currVal) =>
       currVal.map((v, i) => (i === index ? title : v))
     );
     setIsSuggestionVisible((currVal) => currVal.map((v, i) => false));
@@ -212,7 +212,7 @@ const GamesListPage = () => {
               ...curr,
               { value: "", game: {} },
             ]);
-            setSearchSelection((curr) => [...curr, ""]);
+            setCompareSelection((curr) => [...curr, ""]);
             setIsSuggestionVisible((curr) => [...curr, false]);
           }}
           disabled={gamesList.length === compareGamesSelections.length}
@@ -225,7 +225,7 @@ const GamesListPage = () => {
           <tbody>
             <tr>
               <th></th>
-              {searchSelection.map((input, index) => (
+              {compareSelection.map((input, index) => (
                 <td key={index} className="selection-game-cell">
                   <div className="select-game">
                     {index > 1 && (
@@ -235,7 +235,7 @@ const GamesListPage = () => {
                           setCompareGamesSelections((curr) =>
                             curr.filter((s, i) => index !== i)
                           );
-                          setSearchSelection((curr) =>
+                          setCompareSelection((curr) =>
                             curr.filter((s, i) => index !== i)
                           );
                           setIsSuggestionVisible((curr) =>
@@ -250,17 +250,17 @@ const GamesListPage = () => {
                       type="text"
                       className={
                         "input-compare " +
-                        (index > 1 ? "fied-compare-with-delete" : "")
+                        (index > 1 ? "field-compare-with-delete" : "")
                       }
                       placeholder="Cerca un gioco..."
-                      value={searchSelection[index]}
+                      value={compareSelection[index]}
                       onFocus={() =>
                         setIsSuggestionVisible((curr) =>
                           curr.map((v, i) => i === index)
                         )
                       }
                       onChange={(e) => {
-                        setSearchSelection((currVal) =>
+                        setCompareSelection((currVal) =>
                           currVal.map((v, i) =>
                             i === index ? e.target.value : v
                           )
@@ -268,7 +268,7 @@ const GamesListPage = () => {
                       }}
                       maxLength={50}
                     />
-                    {searchSelection[index].length > 0 &&
+                    {compareSelection[index].length > 0 &&
                       isSuggestionVisible[index] && (
                         <div className="suggestions-list">
                           <ul>

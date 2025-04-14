@@ -33,6 +33,8 @@ const gameModes = [
 const initialPlatforms = ["PC"];
 const initialGameModes = ["Singleplayer"];
 const decimalPlaces = 2;
+const minPrice = 0;
+const maxPrice = 600;
 
 const AddGamePage = () => {
   const navigate = useNavigate();
@@ -116,6 +118,11 @@ const AddGamePage = () => {
   const isValidGamemodes = useMemo(
     () => selectedGameModes.length > 0,
     [selectedGameModes]
+  );
+
+  const isValidPrice = useMemo(
+    () => price >= minPrice && price <= maxPrice,
+    [price]
   );
 
   /* handlePriceChange for validation price */
@@ -245,9 +252,14 @@ const AddGamePage = () => {
               step="any"
               value={price}
               onChange={handlePriceChange}
-              min={0}
-              max={600}
+              min={minPrice}
+              max={maxPrice}
             />
+            {!isValidPrice && (
+              <p className="input-validation">
+                {`Il prezzo del gioco non può essere inferiore a ${minPrice}€ o maggiore di ${maxPrice}€`}
+              </p>
+            )}
           </div>
 
           {/* form info  */}
