@@ -1,0 +1,267 @@
+[
+  {
+    "id": 1,
+    "title": "The Legend of Zelda: Breath of the Wild",
+    "category": "Adventure",
+    "subCategories": ["Open World"],
+    "platforms": ["Nintendo Switch"],
+    "softwareHouse": {
+      "name": "Nintendo EPD",
+      "country": "Japan",
+      "foundedYear": 2015,
+      "parentCompany": "Nintendo"
+    },
+    "publisher": "Nintendo",
+    "gameModes": ["Singleplayer"],
+    "ageRating": "PEGI 12",
+    "releaseDate": "2017-03-03",
+    "description": "An open-world action-adventure game where Link awakens from a 100-year slumber to discover Hyrule has fallen to ruin.",
+    "features": [
+      "Physics-based gameplay",
+      "Climb any surface",
+      "Weather system",
+      "Weapon durability"
+    ],
+    "price": 59.99,
+    "averageRating": 9.7,
+    "averagePlaytime": "95 hours",
+    "totalSales": 29000000
+  },
+  {
+    "id": 2,
+    "title": "Red Dead Redemption 2",
+    "category": "Action",
+    "subCategories": ["Open World", "Third-person"],
+    "platforms": ["PC", "PlayStation", "Xbox"],
+    "softwareHouse": {
+      "name": "Rockstar Games",
+      "country": "United States",
+      "foundedYear": 1998
+    },
+    "engine": "RAGE",
+    "gameModes": ["Singleplayer", "Online"],
+    "releaseDate": "2018-10-26",
+    "description": "A western-themed action-adventure game set in an open world environment featuring Arthur Morgan, an outlaw and member of the Van der Linde gang.",
+    "ratings": [
+      {
+        "score": 97,
+        "source": "Metacritic"
+      }
+    ],
+    "averagePlaytime": "105 hours",
+    "price": 59.99
+  },
+  {
+    "id": 3,
+    "title": "League of Legends",
+    "category": "Strategy",
+    "subCategories": ["Tactical"],
+    "platforms": ["PC"],
+    "softwareHouse": {
+      "name": "Riot Games",
+      "country": "United States",
+      "foundedYear": 2006,
+      "website": "https://www.riotgames.com/"
+    },
+    "gameModes": ["Multiplayer", "Online"],
+    "releaseDate": "2009-10-27",
+    "inGamePurchases": true,
+    "averagePlaytime": "150 hours",
+    "price": 0
+  },
+  {
+    "id": 4,
+    "title": "Cyberpunk 2077",
+    "originalTitle": "Cyberpunk 2077",
+    "category": "RPG",
+    "subCategories": ["Open World", "First-person"],
+    "platforms": ["PC", "PlayStation", "Nintendo Switch"],
+    "softwareHouse": {
+      "name": "CD Projekt Red",
+      "country": "Poland",
+      "foundedYear": 1994
+    },
+    "engine": "REDengine 4",
+    "gameModes": [
+      "Singleplayer",
+      "Multiplayer",
+      "Co-op",
+      "Online",
+      "Drop-in/Drop-out"
+    ],
+    "ageRating": "PEGI 18",
+    "releaseDate": "2020-12-10",
+    "lastUpdate": "2023-04-25",
+    "systemRequirements": {
+      "minimum": {
+        "os": "Windows 10",
+        "processor": "Intel Core i5-3570K or AMD FX-8310",
+        "memory": "8 GB RAM",
+        "graphics": "NVIDIA GeForce GTX 970 or AMD Radeon RX 470",
+        "storage": "70 GB available space"
+      }
+    },
+    "price": 59.99,
+    "dlcs": [
+      {
+        "title": "Phantom Liberty",
+        "releaseDate": "2023-09-26",
+        "price": 29.99,
+        "description": "A spy-thriller expansion for Cyberpunk 2077"
+      }
+    ],
+    "updatedAt": "2025-04-10T14:12:15.827Z"
+  },
+  {
+    "id": 5,
+    "title": "Stardew Valley",
+    "category": "Sandbox",
+    "subCategories": ["Puzzle", "Survival"],
+    "platforms": ["PC", "PlayStation", "Xbox", "Nintendo Switch", "Mobile"],
+    "softwareHouse": {
+      "name": "ConcernedApe",
+      "country": "United States",
+      "foundedYear": 2012
+    },
+    "gameModes": ["Singleplayer", "Co-op", "Multiplayer"],
+    "releaseDate": "2016-02-26",
+    "description": "A farming simulation game where players take the role of a character who inherits their grandfather's dilapidated farm.",
+    "price": 14.99,
+    "averageRating": 9.2,
+    "averagePlaytime": "120 hours",
+    "totalSales": 20000000
+  },
+  {
+    "id": 6,
+    "title": "Valorant",
+    "category": "Shooter",
+    "subCategories": ["First-person", "Tactical"],
+    "platforms": ["PC"],
+    "softwareHouse": {
+      "name": "Riot Games",
+      "country": "United States",
+      "foundedYear": 2006
+    },
+    "gameModes": ["Multiplayer", "Online"],
+    "releaseDate": "2020-06-02",
+    "features": [
+      "Character abilities",
+      "Weapon economy",
+      "Competitive matchmaking"
+    ],
+    "price": 0,
+    "inGamePurchases": true
+  },
+  {
+    "id": 7,
+    "title": "Hollow Knight",
+    "category": "Platform",
+    "subCategories": ["Metroidvania"],
+    "platforms": ["PC", "PlayStation", "Xbox", "Nintendo Switch"],
+    "softwareHouse": {
+      "name": "Team Cherry",
+      "country": "Australia",
+      "foundedYear": 2014
+    },
+    "gameModes": ["Singleplayer"],
+    "releaseDate": "2017-02-24",
+    "description": "A 2D Metroidvania action-adventure game set in Hallownest, a fictional ancient kingdom.",
+    "dlcs": [
+      {
+        "title": "Hidden Dreams",
+        "releaseDate": "2017-08-03",
+        "price": 0,
+        "description": "Adds new boss fights, dream gates, and more"
+      },
+      {
+        "title": "The Grimm Troupe",
+        "releaseDate": "2017-10-26",
+        "price": 0,
+        "description": "Adds new major quest, boss fights, charms, and enemies"
+      }
+    ],
+    "price": 14.99,
+    "averageRating": 9.5,
+    "averagePlaytime": "40 hours"
+  },
+  {
+    "id": 8,
+    "title": "God of War",
+    "category": "Action",
+    "subCategories": ["Third-person"],
+    "platforms": ["PlayStation", "PC"],
+    "softwareHouse": {
+      "name": "Santa Monica Studio",
+      "country": "United States",
+      "foundedYear": 1999,
+      "parentCompany": "Sony Interactive Entertainment"
+    },
+    "publisher": "Sony Interactive Entertainment",
+    "gameModes": ["Singleplayer"],
+    "ageRating": "PEGI 18",
+    "releaseDate": "2018-04-20",
+    "description": "An action-adventure game that follows Kratos and his son Atreus on a journey through Norse realms.",
+    "ratings": [
+      {
+        "score": 94,
+        "source": "Metacritic"
+      },
+      {
+        "score": 10,
+        "source": "IGN"
+      }
+    ],
+    "price": 49.99,
+    "totalSales": 23000000
+  },
+  {
+    "id": 9,
+    "title": "Fortnite",
+    "category": "Shooter",
+    "subCategories": ["Battle Royale", "Survival", "Third-person"],
+    "platforms": ["PC"],
+    "softwareHouse": {
+      "name": "Epic Games",
+      "country": "United States",
+      "foundedYear": 1991
+    },
+    "engine": "Unreal Engine",
+    "gameModes": ["Singleplayer"],
+    "releaseDate": "2017-07-25",
+    "features": ["Building", "Season passes", "Live events", "Character skins"],
+    "price": 46.45,
+    "inGamePurchases": true,
+    "averagePlaytime": "85 hours",
+    "updatedAt": "2025-04-10T08:58:04.873Z"
+  },
+  {
+    "id": 10,
+    "title": "Hades",
+    "category": "Action",
+    "subCategories": ["Roguelike"],
+    "platforms": ["PC", "PlayStation", "Xbox", "Nintendo Switch"],
+    "softwareHouse": {
+      "name": "Supergiant Games",
+      "country": "United States",
+      "foundedYear": 2009
+    },
+    "gameModes": ["Singleplayer"],
+    "releaseDate": "2020-09-17",
+    "description": "A rogue-like dungeon crawler where you play as Zagreus, immortal son of Hades, on his quest to escape from the underworld.",
+    "features": [
+      "Procedurally generated levels",
+      "Character progression",
+      "Narrative development",
+      "Greek mythology"
+    ],
+    "price": 24.99,
+    "ratings": [
+      {
+        "score": 93,
+        "source": "Metacritic"
+      }
+    ],
+    "averageRating": 9.5,
+    "averagePlaytime": "35 hours"
+  }
+]
