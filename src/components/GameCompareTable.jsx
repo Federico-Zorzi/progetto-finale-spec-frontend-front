@@ -4,6 +4,7 @@ import { memo } from "react";
 const GameCompareTable = memo(({ games }) => {
   return (
     <>
+      {/* titles */}
       <tr className="compare-row">
         <th className="header-cell">Titolo:</th>
         {games.map((g, i) => (
@@ -12,6 +13,8 @@ const GameCompareTable = memo(({ games }) => {
           </td>
         ))}
       </tr>
+
+      {/* release date */}
       <tr className="compare-row">
         <th className="header-cell">Data di rilascio:</th>
         {games.map((g, i) => (
@@ -20,6 +23,8 @@ const GameCompareTable = memo(({ games }) => {
           </td>
         ))}
       </tr>
+
+      {/* softwarehouse */}
       <tr className="compare-row">
         <th className="header-cell">Casa di produzione:</th>
         {games.map((g, i) => (
@@ -28,6 +33,8 @@ const GameCompareTable = memo(({ games }) => {
           </td>
         ))}
       </tr>
+
+      {/* price */}
       <tr className="compare-row">
         <th className="header-cell">Prezzo:</th>
         {games.map((g, i) => (
@@ -40,6 +47,8 @@ const GameCompareTable = memo(({ games }) => {
           </td>
         ))}
       </tr>
+
+      {/* platforms */}
       <tr className="compare-row">
         <th className="header-cell">Piattaforme:</th>
         {games.map((g, i) => (
@@ -48,6 +57,8 @@ const GameCompareTable = memo(({ games }) => {
           </td>
         ))}
       </tr>
+
+      {/* gamemodes */}
       <tr className="compare-row">
         <th className="header-cell">Modalità di gioco:</th>
         {games.map((g, i) => (

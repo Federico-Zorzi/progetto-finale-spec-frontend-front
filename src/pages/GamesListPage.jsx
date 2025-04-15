@@ -35,7 +35,7 @@ const GamesListPage = () => {
     { value: "", game: {} },
   ]);
 
-  /* Categories for filter by category */
+  /* Categories for filter */
   const categories = useMemo(
     () =>
       gamesList.reduce((acc, curr) => {
@@ -87,26 +87,32 @@ const GamesListPage = () => {
     [gamesList, titleFilter, categoryFilter, alphabeticOrder]
   );
 
-  /* COMPARE GAMES  */
-  /* Title available for selection */
-  const titlesAvailable = useMemo(() => {
-    return compareSelection.map((s) =>
-      gamesList.filter(
-        (g) =>
-          !compareGamesSelections.some((game) => game.value === g.title) &&
-          g.title.toLocaleLowerCase().includes(s.toLocaleLowerCase())
-      )
-    );
-  }, [compareSelection, compareGamesSelections]);
+  /* COMPARE GAMES */
+  /* Titles available for selection */
+  const titlesAvailable = useMemo(
+    () =>
+      compareSelection.map((s) =>
+        gamesList.filter(
+          (g) =>
+            !compareGamesSelections.some((game) => game.value === g.title) &&
+            g.title.toLocaleLowerCase().includes(s.toLocaleLowerCase())
+        )
+      ),
+    [compareSelection, compareGamesSelections]
+  );
 
-  /* Game selection management */
-  const handleGameSelectionChange = (title, index, event) => {
+  /* Game compare selection management */
+  const handleGameSelectionChange = (title, index) => {
     const gameSelected = gamesList.find((game) => game.title === title);
+
+    /* Modification of selections */
     setCompareSelection((currVal) =>
       currVal.map((v, i) => (i === index ? title : v))
     );
+    /* Changing the visibility of suggestions */
     setIsSuggestionVisible((currVal) => currVal.map((v, i) => false));
 
+    /* Fetch game selected for its data */
     fetchGame(gameSelected.id)
       .then((data) => {
         setCompareGamesSelections((prevSelections) =>
@@ -118,10 +124,11 @@ const GamesListPage = () => {
       .catch((err) => console.error(err));
   };
 
-  /* Games selected for create table */
-  const gamesForCompare = useMemo(() => {
-    return compareGamesSelections.map((g) => g.game);
-  }, [compareGamesSelections]);
+  /* Number of games for create table */
+  const gamesForCompare = useMemo(
+    () => compareGamesSelections.map((g) => g.game),
+    [compareGamesSelections]
+  );
 
   return (
     <main>
@@ -175,6 +182,7 @@ const GamesListPage = () => {
           </Link>
         </div>
 
+        {/* cards of games */}
         {gamesListFiltered.length > 0 &&
           gamesListFiltered.map((g) => (
             <div className="card-container" key={g.id}>
@@ -229,6 +237,7 @@ const GamesListPage = () => {
                 <td key={index} className="selection-game-cell">
                   <div className="select-game">
                     {index > 1 && (
+                      /* Delete compare column button */
                       <button
                         className="compare-trash-btn"
                         onClick={() => {
@@ -246,6 +255,7 @@ const GamesListPage = () => {
                         <i className="fa-solid fa-trash"></i>
                       </button>
                     )}
+                    {/* input for games compare */}
                     <input
                       type="text"
                       className={
@@ -255,11 +265,13 @@ const GamesListPage = () => {
                       placeholder="Cerca un gioco..."
                       value={compareSelection[index]}
                       onFocus={() =>
+                        /* set visibility of suggestions */
                         setIsSuggestionVisible((curr) =>
                           curr.map((v, i) => i === index)
                         )
                       }
                       onChange={(e) => {
+                        /* set value for each input */
                         setCompareSelection((currVal) =>
                           currVal.map((v, i) =>
                             i === index ? e.target.value : v
@@ -268,6 +280,8 @@ const GamesListPage = () => {
                       }}
                       maxLength={50}
                     />
+
+                    {/* Suggestions list under input field */}
                     {compareSelection[index].length > 0 &&
                       isSuggestionVisible[index] && (
                         <div className="suggestions-list">
@@ -276,7 +290,7 @@ const GamesListPage = () => {
                               <li key={i}>
                                 <button
                                   onClick={(e) =>
-                                    handleGameSelectionChange(g.title, index, e)
+                                    handleGameSelectionChange(g.title, index)
                                   }
                                 >
                                   {g.title}
@@ -291,6 +305,7 @@ const GamesListPage = () => {
               ))}
             </tr>
 
+            {/* Table creation for compare  */}
             <GameCompareTable games={gamesForCompare} />
           </tbody>
         </table>

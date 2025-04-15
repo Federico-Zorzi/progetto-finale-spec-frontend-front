@@ -1,5 +1,6 @@
 import { useEffect, useReducer, useState } from "react";
 
+/* Reducer for favorite games list management */
 function reducerFavoriteGames(favoriteGamesList, action) {
   switch (action.type) {
     case "SET_FAVORITE_GAMES":
@@ -18,9 +19,9 @@ function reducerFavoriteGames(favoriteGamesList, action) {
 
 const useFavoriteGames = () => {
   const [favoriteGamesList, dispatch] = useReducer(reducerFavoriteGames, []);
-  const [isLoading, setIsLoading] = useState(true); // Add loading state
+  const [isLoading, setIsLoading] = useState(true);
 
-  /* get fav. games from local storage at the start */
+  /* Get fav. games from local storage at the start */
   useEffect(() => {
     /* Get favorite games list from storage  */
     const favoriteGamesListFromStorage =
@@ -42,7 +43,7 @@ const useFavoriteGames = () => {
     }
   }, []);
 
-  /* change fav. games in local storage */
+  /* Change fav. games in local storage */
   useEffect(() => {
     /* Change data in storage only if we are not in loading condition */
     if (!isLoading) {
@@ -51,12 +52,14 @@ const useFavoriteGames = () => {
         JSON.stringify(favoriteGamesList)
       );
     }
-  }, [favoriteGamesList, isLoading]);
+  }, [favoriteGamesList]);
 
+  /* Function for add new fav. game */
   const addFavoriteGame = (newFavoriteGame) => {
     dispatch({ type: "ADD_FAVORITE_GAME", payload: { newFavoriteGame } });
   };
 
+  /* Function for remove fav. game */
   const removeFavoriteGame = (id) => {
     dispatch({ type: "REMOVE_FAVORITE_GAME", payload: { id } });
   };

@@ -32,6 +32,8 @@ const gameModes = [
 /* initial value for checkbox */
 const initialPlatforms = ["PC"];
 const initialGameModes = ["Singleplayer"];
+
+/* constant variables */
 const decimalPlaces = 2;
 const minPrice = 0;
 const maxPrice = 600;
@@ -52,8 +54,8 @@ const AddGamePage = () => {
 
   const [errorMsg, setErrorMsg] = useState("");
 
-  /* checkbox group handleChange */
-  const handleCheckboxChange = (name, values, setState) => {
+  /* handleChange checkbox group */
+  const handleCheckboxChange = (values, setState) => {
     setState(values);
   };
 
@@ -64,6 +66,7 @@ const AddGamePage = () => {
     const currDate = new Date();
     const currDateFormatted = dayjs(currDate).format("YYYY-MM-DD");
 
+    /* validation input fields */
     if (
       !isValidTitle ||
       !isValidSoftwareHouse ||
@@ -72,6 +75,7 @@ const AddGamePage = () => {
     )
       return;
 
+    /* add game function */
     addGame(
       title,
       category.current.value,
@@ -149,10 +153,11 @@ const AddGamePage = () => {
           ← Indietro
         </button>
 
+        {/* form for add new game */}
         <form onSubmit={handleSubmit}>
           {/* title */}
           <div className="input-container">
-            <label htmlFor="title">Titolo: </label>
+            <label htmlFor="title">* Titolo: </label>
             <input
               id="title"
               type="text"
@@ -170,7 +175,7 @@ const AddGamePage = () => {
 
           {/* category */}
           <div className="input-container">
-            <label htmlFor="category">Categoria: </label>
+            <label htmlFor="category">* Categoria: </label>
             <select id="category" ref={category} required>
               <option value="">Seleziona categoria...</option>
               {mainCategories.map((c, i) => (
@@ -184,7 +189,7 @@ const AddGamePage = () => {
           {/* platform */}
           <div className="input-container">
             <CheckboxGroup
-              label="Piattaforme:"
+              label="* Piattaforme:"
               name="platforms"
               options={platforms}
               onChange={handleCheckboxChange}
@@ -202,7 +207,7 @@ const AddGamePage = () => {
           {/* game modes */}
           <div className="input-container">
             <CheckboxGroup
-              label="Modalità di gioco:"
+              label="* Modalità di gioco:"
               name="gamemodes"
               options={gameModes}
               onChange={handleCheckboxChange}
@@ -219,7 +224,7 @@ const AddGamePage = () => {
 
           {/* softwarehouse name */}
           <div className="input-container">
-            <label htmlFor="softwarehouse-name">Casa di sviluppo: </label>
+            <label htmlFor="softwarehouse-name">* Casa di sviluppo: </label>
             <input
               id="softwarehouse-name"
               type="text"
@@ -239,13 +244,13 @@ const AddGamePage = () => {
 
           {/* release date */}
           <div className="input-container">
-            <label htmlFor="release-date">* Data di rilascio: </label>
+            <label htmlFor="release-date">Data di rilascio: </label>
             <input id="release-date" type="date" ref={releaseDate} />
           </div>
 
           {/* price */}
           <div className="input-container">
-            <label htmlFor="release-date">* Prezzo €: </label>
+            <label htmlFor="release-date">Prezzo €: </label>
             <input
               id="release-date"
               type="number"
@@ -262,9 +267,9 @@ const AddGamePage = () => {
             )}
           </div>
 
-          {/* form info  */}
+          {/* form info */}
           <div id="info">
-            <p>I campi con * sono opzionali</p>
+            <p>I campi con * sono obbligatori</p>
           </div>
 
           {/* button for submit */}
@@ -281,6 +286,7 @@ const AddGamePage = () => {
           </button>
         </form>
 
+        {/* alert for error message */}
         {errorMsg && (
           <div className="error-alert">
             <p>{errorMsg}</p>

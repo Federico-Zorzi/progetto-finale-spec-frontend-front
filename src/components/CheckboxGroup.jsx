@@ -11,7 +11,7 @@ const CheckboxGroup = ({
   const [checkedValues, setCheckedValues] = useState(defaultValues || []);
   const isInitialRender = useRef(true);
 
-  /* check if its not the first render and rerender if defaultValues change */
+  /* check if its not the first render and I check the initial defaults, if they change */
   useEffect(() => {
     if (!isInitialRender.current) {
       setCheckedValues(defaultValues || []);
@@ -19,6 +19,7 @@ const CheckboxGroup = ({
     isInitialRender.current = false;
   }, [defaultValues]);
 
+  /* Function for change checkbox group values */
   const handleChange = (event) => {
     const value = event.target.value;
     const isChecked = event.target.checked;
@@ -34,7 +35,6 @@ const CheckboxGroup = ({
 
     /* execution of function onChange for add or remove elements from the list for the fetch */
     onChange(
-      name,
       isChecked
         ? [...checkedValues, value]
         : checkedValues.filter((v) => v !== value),

@@ -23,10 +23,11 @@ const GamePage = () => {
   const [errorMsg, setErrorMsg] = useState("");
   const [isDetailOpen, setIsDetailOpen] = useState(false);
 
-  /* MODAL VIS */
+  /* modals visualization */
   const [isShowDeleteModal, setIsShowDeleteModal] = useState(false);
   const [isShowUpdateModal, setIsShowUpdateModal] = useState(false);
 
+  /* fetch game data */
   useEffect(() => {
     fetchGame(id).then((data) => setGameSelected(data));
   }, [id]);
@@ -46,7 +47,7 @@ const GamePage = () => {
     setErrorMsg("");
 
     updateGame(gameId, gameModified)
-      .then((data) => fetchGame(id).then((data) => setGameSelected(data)))
+      .then((data) => setGameSelected(data.videogame))
       .catch((error) => setErrorMsg(error.message));
   };
 
@@ -72,14 +73,17 @@ const GamePage = () => {
           </div>
         </div>
 
+        {/* alert for error message */}
         {errorMsg && (
           <div className="error-alert">
             <p>{errorMsg}</p>
           </div>
         )}
 
+        {/* game selected card */}
         {gameSelected && (
           <>
+            {/* title and star button */}
             <div id="game-detail-header">
               <button
                 onClick={() => {
@@ -106,6 +110,8 @@ const GamePage = () => {
 
               <h2>{gameSelected.title}</h2>
             </div>
+
+            {/* game informations */}
             <div id="game-detail-content">
               <div id="game-information">
                 <ul id="game-information-list">

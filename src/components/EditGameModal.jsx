@@ -57,8 +57,8 @@ const EditGameModal = ({
     setPriceUpdated(game.price !== undefined ? game.price : 0);
   }, [game, initialPlatforms, initialGamemodes]);
 
-  /* chackbox group handleChange */
-  const handleChange = (name, values, setState) => {
+  /* Checkbox group handleChange */
+  const handleCheckboxChange = (values, setState) => {
     setState(values);
   };
 
@@ -141,7 +141,7 @@ const EditGameModal = ({
                 label="Piattaforme:"
                 name="platforms"
                 options={platforms}
-                onChange={handleChange}
+                onChange={handleCheckboxChange}
                 defaultValues={selectedPlatformsUpdated}
                 setState={setSelectedPlatformsUpdated}
               />
@@ -161,7 +161,7 @@ const EditGameModal = ({
                 label="Modalità di gioco:"
                 name="gamemodes"
                 options={gameModes}
-                onChange={handleChange}
+                onChange={handleCheckboxChange}
                 defaultValues={selectedGameModesUpdated}
                 setState={setSelectedGameModesUpdated}
               />

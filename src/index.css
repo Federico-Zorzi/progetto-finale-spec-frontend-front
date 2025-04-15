@@ -261,7 +261,6 @@ h1 {
   gap: 2rem;
   overflow-y: auto;
   flex-grow: 1;
-  padding-bottom: 1rem;
 }
 
 #game-detail-header {

@@ -1,5 +1,6 @@
 import { useEffect, useReducer } from "react";
 
+/* Reducer for games list management */
 function reducerGames(gamesList, action) {
   switch (action.type) {
     case "SET_GAMES":
@@ -13,7 +14,6 @@ function reducerGames(gamesList, action) {
 
     case "UPDATE_GAME":
       const { gameId, gameUpdated } = action.payload;
-
       return gamesList.map((g) => (g.id === gameId ? gameUpdated : g));
 
     default:
@@ -25,6 +25,7 @@ const useGames = () => {
   const apiUrl = import.meta.env.VITE_API_URL;
   const [gamesList, dispatch] = useReducer(reducerGames, []);
 
+  /* Fetch all games at the start */
   useEffect(() => {
     const fetchGames = async () => {
       try {
@@ -44,6 +45,7 @@ const useGames = () => {
     fetchGames();
   }, []);
 
+  /* Function for add new game */
   const addGame = async (
     title,
     category,
@@ -78,6 +80,7 @@ const useGames = () => {
       if (!resGame.success || resGame.error) {
         let errorMessage = resGame.error || "Errore sconosciuto dal server.";
 
+        /* Print a custom error message */
         if (
           resGame.details &&
           Array.isArray(resGame.details) &&
@@ -105,6 +108,7 @@ const useGames = () => {
     }
   };
 
+  /* Function for remove game */
   const removeGame = async (gameId) => {
     try {
       const resFetchGame = await fetch(`${apiUrl}/videogames/${gameId}`, {
@@ -130,6 +134,7 @@ const useGames = () => {
     }
   };
 
+  /* Function for update a game */
   const updateGame = async (gameId, gameModified) => {
     try {
       const resFetchGame = await fetch(`${apiUrl}/videogames/${gameId}`, {
