@@ -223,7 +223,7 @@ const GamesListPage = () => {
             setCompareSelection((curr) => [...curr, ""]);
             setIsSuggestionVisible((curr) => [...curr, false]);
           }}
-          disabled={gamesList.length === compareGamesSelections.length}
+          disabled={compareGamesSelections.length >= 5}
         >
           <i className="fa-solid fa-square-plus fa-2xl"></i>
         </button>
