@@ -202,6 +202,7 @@ const GamePage = () => {
         onClose={() => setIsShowDeleteModal(false)}
         onConfirm={() => {
           handleGameDelete(id);
+          removeFavoriteGame(parseInt(id));
           setIsShowDeleteModal(false);
         }}
         confirmButton={{
